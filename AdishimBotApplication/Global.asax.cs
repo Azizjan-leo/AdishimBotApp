@@ -12,7 +12,7 @@ namespace AdishimBotApplication
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            Bot.Get();
+            Bot.Get().Wait();
         }
     }
 }

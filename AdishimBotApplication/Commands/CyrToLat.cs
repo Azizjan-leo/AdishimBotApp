@@ -4,9 +4,9 @@ using Telegram.Bot.Types;
 
 namespace AdishimBotApplication.Commands
 {
-    public class HelloCommand : Command
+    public class CyrToLat : Command
     {
-        public override string Name => "hello";
+        public override string Name => "cyrtolat";
 
         public override async Task Execute(Message message, TelegramBotClient client)
         {
@@ -23,7 +23,7 @@ namespace AdishimBotApplication.Commands
             {
 
             }
-         
+
         }
     }
 }
