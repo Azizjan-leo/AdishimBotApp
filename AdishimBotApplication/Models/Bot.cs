@@ -21,6 +21,7 @@ namespace AdishimBotApplication.Models
 
             commandsList = new List<Command>();
             commandsList.Add(new HelloCommand());
+            commandsList.Add(new CyrToLatCommand());
             //TODO: Add more commands here
 
             client = new TelegramBotClient(AppSettings.Key);

@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using AdishimBotApplication.Services;
+using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace AdishimBotApplication.Commands
 {
-    public class CyrToLat : Command
+    public class CyrToLatCommand : Command
     {
         public override string Name => "cyrtolat";
 
@@ -16,8 +17,8 @@ namespace AdishimBotApplication.Commands
                 var messageId = message.MessageId;
 
                 // TODO Command logic -_-
-
-                await client.SendTextMessageAsync(chatId, "Hi!", replyToMessageId: messageId);
+                var text = await TranslitService.CyrToLat(message.Text);
+                await client.SendTextMessageAsync(chatId, text, replyToMessageId: messageId);
             }
             catch (System.Exception)
             {
