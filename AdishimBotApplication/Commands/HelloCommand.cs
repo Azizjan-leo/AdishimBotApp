@@ -6,7 +6,7 @@ namespace AdishimBotApplication.Commands
 {
     public class HelloCommand : Command
     {
-        public override string Name => "hello";
+        public override string Name => @"/salam";
 
         public override async Task Execute(Message message, TelegramBotClient client)
         {
@@ -17,13 +17,15 @@ namespace AdishimBotApplication.Commands
 
                 // TODO Command logic -_-
 
-                await client.SendTextMessageAsync(chatId, "Hi!", replyToMessageId: messageId);
+                await client.SendTextMessageAsync(chatId, "Essalamu eleyküm!", replyToMessageId: messageId);
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
+                
+                //await client.SendTextMessageAsync(353071148, e.Message);
 
             }
-         
+
         }
     }
 }

@@ -24,7 +24,7 @@ namespace AdishimBotApplication.Models
             commandsList.Add(new CyrToLatCommand());
             //TODO: Add more commands here
 
-            client = new TelegramBotClient(AppSettings.Key);
+            client = new TelegramBotClient(AppSettings.Token);
             var hook = string.Format(AppSettings.URL, "api/message/update");
             await client.SetWebhookAsync(hook);
 

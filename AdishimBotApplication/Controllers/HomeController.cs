@@ -4,6 +4,15 @@ namespace AdishimBotApplication.Controllers
 {
     public class HomeController : Controller
     {
-        public string Index() => "It's my first Telegram Bot :D";
+        string answer = "";
+
+        public string Index()
+        {
+            foreach (var item in Logger.Messages)
+            {
+                answer += item + "<br/>";
+            }
+            return answer;
+        }
     }
 }

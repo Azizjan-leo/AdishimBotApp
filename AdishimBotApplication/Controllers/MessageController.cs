@@ -9,12 +9,13 @@ namespace AdishimBotApplication.Controllers
     public class MessageController : ApiController
     {
         [Route(@"api/message/update")] // webhook uri part
-        public async Task<OkResult> Update([FromBody]Update update)
+        public async Task<OkResult> Post([FromBody]Update update)
         {
             var commands = Bot.Commands;
             var message  = update.Message;
+            Logger.Messages.Add($"{message.From.FirstName} writed in {message.Chat.Id} " + message.Text);
             var client   = await Bot.Get();
-
+            
             foreach (var command in commands)
             {
                 if (command.Contains(message.Text))
