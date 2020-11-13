@@ -7,6 +7,6 @@ namespace AdishimBotApplication
 
         public static string Name { get; set; } = "AdishimBot"; // Bots name
 
-        public static string Token { get; set; } = "1404340694:"; // API Key 
+        public static string Token { get; set; } = ""; // API Key 
     }
 }

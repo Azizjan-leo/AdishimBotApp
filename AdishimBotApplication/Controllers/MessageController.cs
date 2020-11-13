@@ -11,9 +11,10 @@ namespace AdishimBotApplication.Controllers
         [Route(@"api/message/update")] // webhook uri part
         public async Task<OkResult> Post([FromBody]Update update)
         {
+            if (update == null) return Ok() ;
             var commands = Bot.Commands;
             var message  = update.Message;
-            Logger.Messages.Add($"{message.From.FirstName} writed in {message.Chat.Id} " + message.Text);
+            //Logger.Messages.Add($"{message.From.FirstName} writed in {message.Chat.Id} " + message.Text);
             var client   = await Bot.Get();
             
             foreach (var command in commands)
