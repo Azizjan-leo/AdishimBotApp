@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
@@ -6,13 +7,20 @@ namespace AdishimBotApp.Commands
 {
     public abstract class Command
     {
-        public abstract string Name { get; }
+        public abstract List<string> Names { get; }
 
         public abstract Task Execute(Message message, TelegramBotClient client);
 
         public bool Contains (string command)
         {
-            return command.Contains(this.Name); // && command.Contains(AppSettings.Name);
+            foreach (var name in Names)
+            {
+                if(command.Contains(name.ToLower())) // && command.Contains(AppSettings.Name);
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

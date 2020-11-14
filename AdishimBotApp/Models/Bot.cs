@@ -1,27 +1,57 @@
 ﻿using AdishimBotApp.Commands;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Telegram.Bot;
+using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Args;
+using System;
 
 namespace AdishimBotApp.Models
 {
-    public static class BotCommands
+    public static class Bot
     {
-        private static List<Command> commandsList;
+        /// <summary>  
+        /// Declare Telegrambot object  
+        /// </summary>  
+        private static readonly TelegramBotClient botClient = new TelegramBotClient("");
 
-        public static IReadOnlyList<Command> Commands { get => commandsList.AsReadOnly(); }
+        private static readonly List<Command> commands = new List<Command>() { new HelloCommand(), new CyrToUlyCommand(), new UlyToCyrCommand() };
 
-        public static List<Command> Get()
+        public static void Start()
         {
-            commandsList = new List<Command>();
-            commandsList.Add(new HelloCommand());
-            commandsList.Add(new CyrToLatCommand());
-            //TODO: Add more commands here
+            botClient.OnMessage += Csharpcornerbotmessage;
+            botClient.StartReceiving();
+        }
 
-            //client = new TelegramBotClient(AppSettings.Token);
-            //var hook = string.Format(AppSettings.URL, "api/message/update");
-            //await client.SetWebhookAsync(hook);
-            return commandsList;
-        } 
+        /// <summary>  
+        /// Handle bot webhook  
+        /// </summary>  
+        /// <param name="sender"></param>  
+        /// <param name="e"></param>  
+        private static void Csharpcornerbotmessage(object sender, MessageEventArgs e)
+        {
+            if (e.Message.Type == MessageType.Text)
+                PrepareQuestionnaires(e);
+        }
+
+        public static void PrepareQuestionnaires(MessageEventArgs e)
+        {
+            try
+            {
+                string messageTxt = e.Message.Text.ToLower();
+                foreach (var command in commands)
+                {
+                    if (command.Contains(messageTxt))
+                    {
+                        command.Execute(e.Message, botClient);
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Messages.Add(ex.Message);
+            }
+
+        }
     }
 }
