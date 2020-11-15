@@ -14,7 +14,13 @@ namespace AdishimBotApp.Models
         /// </summary>  
         private static readonly TelegramBotClient botClient = new TelegramBotClient("");
 
-        private static readonly List<Command> commands = new List<Command>() { new HelloCommand(), new CyrToUlyCommand(), new UlyToCyrCommand() };
+        private static readonly List<Command> commands = new List<Command>()
+        { 
+            new HelloCommand(), 
+            new CyrToUlyCommand(), 
+            new UlyToCyrCommand(),
+            new UlyToArabCommand()
+        };
 
         public static void Start()
         {

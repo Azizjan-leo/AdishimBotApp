@@ -16,10 +16,7 @@ namespace AdishimBotApp.Commands
             var messageId = message.MessageId;
             var text = message.Text;
 
-            foreach (var name in Names)
-            {
-                text = text.Replace(name, "", true, null);
-            }
+            text = RemoveCommand(text);
 
             text = await TranslitService.CyrToUly(text);
             await client.SendTextMessageAsync(chatId, text, replyToMessageId: messageId);
