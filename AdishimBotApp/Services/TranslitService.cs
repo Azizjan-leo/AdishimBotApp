@@ -41,7 +41,7 @@ namespace AdishimBotApp.Services
 
         public static async Task<string> UlyToArab(string str)
         {
-            char[] text = str.ToCharArray();
+            char[] text = str.ToLower().ToCharArray();
             bool connNext = false;
             for (int i = 0; i < text.Length; i++)
             {
