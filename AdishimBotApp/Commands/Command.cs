@@ -17,7 +17,7 @@ namespace AdishimBotApp.Commands
             {
                 text = text.Replace(name, "", true, null);
             }
-            return text;
+            return text.Remove(0,1);
         }
 
         public bool Contains (string command)

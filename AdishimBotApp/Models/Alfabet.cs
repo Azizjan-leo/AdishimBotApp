@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿
 namespace AdishimBotApp.Models
 {
     public static class Alfabet
@@ -15,7 +11,7 @@ namespace AdishimBotApp.Models
             new Letter(4, "Ч", "ч", "CH", "ch", "ﭺ", "ﭼ", "ﭽ", "ﭻ", true, true, true), 
             new Letter(5, "Ш", "ш", "SH", "sh", "ﺵ", "ﺷ", "ﺸ", "ﺶ", true, true, true), 
             new Letter(6, "Ю", "ю", "YU", "yu", "ﻳﯘ", "ﻳﯘ", "ﻳﯘ", "ﻳﯘ", false, false, false), 
-            new Letter(7, "Я", "я", "YA", "ya", "ﻳﺎ", "я", "ﻳﺎ", "ﻳﺎ", false, false, false), 
+            new Letter(7, "Я", "я", "YA", "ya", "ﻳﺎ", "ﻳﺎ", "ﻳﺎ", "ﻳﺎ", false, false, false), 
             new Letter(8, "А", "а", "A", "a", "ﺋﺎ", "ﺋﺎ", "ﺎ", "ﺎ", false, false, true), 
             new Letter(9, "Ә", "ә", "E", "e", "ﺋﻪ", "ﺋﻪ", "ﻪ", "ﻪ", false, false, true), 
             new Letter(10, "Б", "б", "B", "b", "ﺏ", "ﺑ", "ﺒ", "ﺐ", true, true, true), 
@@ -25,7 +21,7 @@ namespace AdishimBotApp.Models
             new Letter(14, "Е", "е", "Ё", "ё", "ﺋﯥ", "ﺋﯧ", "ﯧ", "ﯥ", true, true, true), 
             new Letter(15, "Җ", "җ", "J", "j", "ﺝ", "ﭼ", "ﭽ", "ﭻ", true, true, true), 
             new Letter(16, "З", "з", "Z", "z", "ﺯ", "ﺯ", "ﺰ", "ﺰ", true, true, true), 
-            new Letter(17, "И", "и", "I", "i", "ﺋﻰ", "ﺋﺌ", "ﺌ", "ﻰ", true, true, true), 
+            new Letter(17, "И", "и", "I", "i", "ﺋﻰ", "ﺋ", "ﺌ", "ﻰ", true, true, true), 
             new Letter(18, "Й", "й", "Y", "y", "ﻱ", "ﻳ", "ﻴ", "ﻲ", true, true, true), 
             new Letter(19, "К", "к", "K", "k", "ﻙ", "ﻛ", "ﻜ", "ﻚ", true, true, true), 
             new Letter(20, "Қ", "қ", "Q", "q", "ﻕ", "ﻗ", "ﻘ", "ﻖ", true, true, true), 
@@ -38,7 +34,7 @@ namespace AdishimBotApp.Models
             new Letter(27, "Р", "р", "R", "r", "ﺭ", "ﺭ", "ﺮ", "ﺮ", false, false, true), 
             new Letter(28, "С", "с", "S", "s", "ﺱ", "ﺳ", "ﺴ", "ﺲ", true, true, true), 
             new Letter(29, "Т", "т", "T", "t", "ﺕ", "ﺗ", "ﺘ", "ﺖ", true, true, true), 
-            new Letter(30, "У", "у", "U", "u", "ﺋﯘ", "у", "", "", true, true, true), 
+            new Letter(30, "У", "у", "U", "u", "ﺋﯘ", "у", "ﯘ", "ﯘ", true, true, true), 
             new Letter(31, "Ү", "ү", "Ü", "ü", "ﺋﯜ", "ﺋﯜ", "ﯜ", "ﯜ", false, false, true), 
             new Letter(32, "Ф", "ф", "F", "f", "ﻑ", "ﻓ", "ﻔ", "ﻒ", true, true, true), 
             new Letter(33, "Х", "х", "X", "x", "ﺥ", "ﺧ", "ﺨ", "ﺦ", true, true, true),
