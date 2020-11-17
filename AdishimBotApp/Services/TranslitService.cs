@@ -9,7 +9,7 @@ namespace AdishimBotApp.Services
 {
     public static class TranslitService
     {
-        private static int GetIndex(char _letter, bool prev = false)
+        private static int GetIndex(char _letter, bool prev = false, bool isCyr = false)
         {
             char[] arr = { _letter };
             var str = new string(arr);
@@ -21,10 +21,21 @@ namespace AdishimBotApp.Services
                         return letter.Index;
                 }
             }
-            foreach (var letter in Alfabet.Letters)
+            if (isCyr)
             {
-                if (letter.UlyDown == str)
-                    return letter.Index;
+                foreach (var letter in Alfabet.Letters)
+                {
+                    if (letter.CyrDown == str)
+                        return letter.Index;
+                }
+            }
+            else
+            {
+                foreach (var letter in Alfabet.Letters)
+                {
+                    if (letter.UlyDown == str)
+                        return letter.Index;
+                }
             }
             return 0;
         }
@@ -37,6 +48,146 @@ namespace AdishimBotApp.Services
             }
             // finally, let's decrement Array's size by one
             Array.Resize(ref arr, arr.Length - 1);
+        }
+
+        public static async Task<string> CyrToArab(string str)
+        {
+            char[] text = str.ToLower().ToCharArray();
+            bool connNext = false;
+            for (int i = 0; i < text.Length; i++)
+            {
+                int index = GetIndex(text[i], isCyr: true);
+
+                if (index == 0)
+                    continue;
+
+                var letter = Alfabet.Letters.Where(x => x.Index == index).First();
+
+                if (i == 0 || (i > 0 && GetIndex(text[i - 1], true) == 0)) // start
+                {
+                    if (letter.ArabStart.Length > 1)
+                    {
+
+                        char[] newarr = new char[text.Length + letter.ArabStart.Length];
+                        for (int j = 0; j < text.Length + 1; j++)
+                        {
+                            if (j < i)
+                                newarr[j] = text[j];
+                            else if (j == i)
+                            {
+                                int ind = 0;
+                                for (int k = j; ind < letter.ArabStart.Length; k++)
+                                {
+                                    newarr[k] = letter.ArabStart[ind++];
+                                }
+                                j += ind - 1;
+                                continue;
+                            }
+                            else
+                                newarr[j] = text[j - 1];
+                        }
+                        text = newarr;
+                        i += letter.ArabStart.Length - 3;
+                    }
+                    else
+                    {
+                        if (i + 1 < text.Length && GetIndex(text[i + 1], isCyr: true) != 0)
+                            text[i] = letter.ArabStart[0];
+                        else
+                            text[i] = letter.Arab[0];
+                    }
+                    connNext = letter.ConnNext;
+                }
+                else if (i == text.Length - 1 || GetIndex(text[i + 1], isCyr: true) == 0) // end
+                {
+                    if (connNext)
+                    {
+                        text[i] = letter.ArabEnd[0];
+                    }
+                    else
+                    {
+                        if (letter.CyrDown == "а")
+                        {
+                            text[i] = 'ﺍ';
+                            connNext = false;
+                            continue;
+                        }
+                        if (letter.CyrDown == "о")
+                        {
+                            text[i] = 'ﻭ';
+                            connNext = false;
+                            continue;
+                        }
+                        if (letter.CyrDown == "ә")
+                        {
+                            text[i] = 'ﻩ';
+                            connNext = false;
+                            continue;
+                        }
+                        text[i] = letter.Arab[0];
+                    }
+                    connNext = false;
+                }
+                else // center
+                {
+                    if (connNext)
+                    {
+                        text[i] = letter.ArabCenter[0];
+                    }
+                    else
+                    {
+                        if (letter.Arab == "ﺋﺎ")
+                        {
+                            text[i] = 'ﺍ';
+                            connNext = false;
+                            continue;
+                        }
+                        if (letter.CyrDown == "о")
+                        {
+                            text[i] = 'ﻭ';
+                            connNext = false;
+                            continue;
+                        }
+                        if (letter.CyrDown == "ә")
+                        {
+                            text[i] = 'ﻩ';
+                            connNext = false;
+                            continue;
+                        }
+                        if (letter.ArabStart.Length > 1)
+                        {
+                            char[] newarr = new char[text.Length + letter.ArabStart.Length];
+                            for (int j = 0; j < text.Length + 1; j++)
+                            {
+                                if (j < i)
+                                    newarr[j] = text[j];
+                                else if (j == i)
+                                {
+                                    int ind = 0;
+                                    for (int k = j; ind < letter.ArabStart.Length; k++)
+                                    {
+                                        newarr[k] = letter.ArabStart[ind++];
+                                    }
+                                    j += ind - 1;
+                                    continue;
+                                }
+                                else
+                                    newarr[j] = text[j - 1];
+                            }
+                            text = newarr;
+                            i += letter.ArabStart.Length - 3;
+                        }
+                        else
+                        {
+                            text[i] = letter.ArabStart[0];
+                        }
+
+                    }
+                    connNext = letter.ConnNext;
+                }
+            }
+            str = new string(text);
+            return str;
         }
 
         public static async Task<string> UlyToArab(string str)
@@ -131,7 +282,7 @@ namespace AdishimBotApp.Services
                     }
                     else
                     {
-                        if(i + 1 < text.Length)
+                        if(i + 1 < text.Length && GetIndex(text[i + 1]) != 0)
                             text[i] = letter.ArabStart[0];
                         else
                             text[i] = letter.Arab[0];

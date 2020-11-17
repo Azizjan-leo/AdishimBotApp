@@ -20,7 +20,7 @@ namespace AdishimBotApp.Models
             new Letter(13, "Д", "д", "D", "d", "ﺩ", "ﺩ", "ﺪ", "ﺪ", false, false, true), 
             new Letter(14, "Е", "е", "Ё", "ё", "ﺋﯥ", "ﺋﯧ", "ﯧ", "ﯥ", true, true, true), 
             new Letter(15, "Җ", "җ", "J", "j", "ﺝ", "ﭼ", "ﭽ", "ﭻ", true, true, true), 
-            new Letter(16, "З", "з", "Z", "z", "ﺯ", "ﺯ", "ﺰ", "ﺰ", true, true, true), 
+            new Letter(16, "З", "з", "Z", "z", "ﺯ", "ﺯ", "ﺰ", "ﺰ", false, true, true), 
             new Letter(17, "И", "и", "I", "i", "ﺋﻰ", "ﺋ", "ﺌ", "ﻰ", true, true, true), 
             new Letter(18, "Й", "й", "Y", "y", "ﻱ", "ﻳ", "ﻴ", "ﻲ", true, true, true), 
             new Letter(19, "К", "к", "K", "k", "ﻙ", "ﻛ", "ﻜ", "ﻚ", true, true, true), 

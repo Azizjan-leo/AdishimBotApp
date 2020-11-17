@@ -19,7 +19,8 @@ namespace AdishimBotApp.Models
             new HelloCommand(), 
             new CyrToUlyCommand(), 
             new UlyToCyrCommand(),
-            new UlyToArabCommand()
+            new UlyToArabCommand(),
+            new CyrToArabCommand()
         };
 
         public static void Start()
