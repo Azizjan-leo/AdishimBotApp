@@ -9,11 +9,11 @@ namespace AdishimBotApp.Services
 {
     public static class TranslitService
     {
-        private static int GetIndex(char _letter, bool prev = false, bool isCyr = false)
+        private static int GetIndex(char _letter, bool arab = false, bool isCyr = false)
         {
             char[] arr = { _letter };
             var str = new string(arr);
-            if (prev)
+            if (arab)
             {
                 foreach (var letter in Alfabet.Letters)
                 {
@@ -39,6 +39,114 @@ namespace AdishimBotApp.Services
             }
             return 0;
         }
+
+        public static async Task<string> ArabToUly(string text)
+        {
+            text = text.Replace('ﺍ', 'a').Replace('ﻭ', 'o').Replace('ﻩ', 'e');
+            bool start = true;
+            
+            char[] arr = text.ToCharArray();
+            for (int i = 0; i < arr.Length; i++)
+            {
+                int index;
+                bool doubleLetter = false;
+                if (i < arr.Length - 1)
+                {
+                    var lettr = Alfabet.Letters.Where(x => x.Arab == new string(new char[] { arr[i], arr[i + 1] })).FirstOrDefault();
+                    if (lettr == null)
+                    {
+                        index = GetIndex(arr[i], arab: true);
+                    }
+                    else
+                    {
+                        index = lettr.Index;
+                        doubleLetter = true;
+                    }
+                }
+                else
+                {
+                    index = GetIndex(text[i], arab: true);
+                }
+                
+                if (index == 0)
+                {
+                    if(arr[i] == '.')
+                    {
+                        start = true;
+                    }
+                    continue;
+                }
+                
+                var letter = Alfabet.Letters.Where(x => x.Index == index).First();
+                if (letter.UlyUp.Length > 1)
+                {
+
+                    if (letter.Arab.Length == 1)
+                    {
+                        if (start)
+                        {
+                            arr[i] = letter.UlyUp[0];
+                            start = false;
+                        }
+                        else
+                        {
+                            arr[i] = letter.CyrDown[0];
+                        }
+                        if (doubleLetter)
+                        {
+                            RemoveAt(ref arr, i + 1);
+                        }
+                    }
+                    else
+                    {
+                        if (start)
+                        {
+                            arr[i] = letter.UlyUp[0];
+                            start = false;
+                        }
+                        else
+                        {
+                            arr[i] = letter.UlyDown[0];
+                        }
+                        arr[i + 1] = letter.UlyDown[1];
+                    }
+                }
+                else
+                {
+                    if (letter.Arab.Length == 1)
+                    {
+                        if (start)
+                        {
+                            arr[i] = letter.UlyUp[0];
+                            start = false;
+                        }
+                        else
+                        {
+                            arr[i] = letter.UlyDown[0];
+                        }
+                    }
+                    else
+                    {
+                        if (start)
+                        {
+                            arr[i] = letter.UlyUp[0];
+                            start = false;
+                        }
+                        else
+                        {
+                            arr[i] = letter.UlyDown[0];
+                        } 
+                        if(doubleLetter)
+                        {
+                            RemoveAt(ref arr, i + 1);
+                        }
+                    }
+                }
+            }
+           
+            return new string(arr);
+        }
+
         public static void RemoveAt<T>(ref T[] arr, int index)
         {
             for (int a = index; a < arr.Length - 1; a++)
