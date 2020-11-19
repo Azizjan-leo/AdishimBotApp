@@ -15,11 +15,77 @@ namespace AdishimBotApp.Services
             var str = new string(arr);
             if (arab)
             {
+                switch ((int)_letter)
+                {
+                    case 1575:
+                        return 8;
+                    case 1576:
+                        return 10;
+                    case 1578:
+                        return 29;
+                    case 1580:
+                        return 15;
+                    case 1583:
+                        return 13;
+                    case 1585:
+                        return 27;
+                    case 1586:
+                        return 16;
+                    case 1587:
+                        return 28;
+                    case 1588:
+                        return 5;
+                    case 1594:
+                        return 1;
+                    case 1602:
+                        return 20;
+                    case 1604:
+                        return 21;
+                    case 1605:
+                        return 22;
+                    case 1662:
+                        return 26;
+                    case 1670:
+                        return 4;
+                    case 1686:
+                        return 16;
+                    case 1603:
+                        return 19;
+                    case 1606:
+                        return 23;
+                    case 1608:
+                        return 24;
+                    case 1609:
+                        return 17;
+                    case 1610:
+                        return 18;
+                    case 1709:
+                        return 3;
+                    case 1726:
+                        return 34;
+                    case 1734:
+                        return 25;
+                    case 1735:
+                        return 30;
+                    case 1736:
+                        return 31;
+                    case 1739:
+                        return 10;
+                    case 1744:
+                        return 14;
+                    case 1749:
+                        return 9;
+                    case 65250:
+                        return 22;
+                    default:
+                        break;
+                }
                 foreach (var letter in Alfabet.Letters)
                 {
                     if (letter.Arab == str || letter.ArabStart == str || letter.ArabCenter == str || letter.ArabEnd == str)
                         return letter.Index;
-                }
+                }               
+            
             }
             if (isCyr)
             {
@@ -40,6 +106,31 @@ namespace AdishimBotApp.Services
             return 0;
         }
 
+    
+        static (int, bool) FindArab(string str)
+        {
+            switch (str)
+            {
+                case "ئا":
+                    return (8, true);
+                case "ئە":
+                    return (9, true);
+                case "ب":
+                    return (10, false);
+                case "ئى":
+                    return (17, true);
+                case "ئۆ":
+                    return (25, true);
+                case "ئۇ":
+                    return (30, true);
+                case "ئۈ":
+                    return (31, true);
+                default:
+                    break;
+            }
+            return (0, false);
+        }
+
         public static async Task<string> ArabToUly(string text)
         {
             text = text.Replace('ﺍ', 'a').Replace('ﻭ', 'o').Replace('ﻩ', 'e');
@@ -48,14 +139,25 @@ namespace AdishimBotApp.Services
             char[] arr = text.ToCharArray();
             for (int i = 0; i < arr.Length; i++)
             {
-                int index;
+                int index = 0;
                 bool doubleLetter = false;
                 if (i < arr.Length - 1)
                 {
-                    var lettr = Alfabet.Letters.Where(x => x.Arab == new string(new char[] { arr[i], arr[i + 1] })).FirstOrDefault();
+                    if (arr[i] == 32)
+                        continue;
+                    var str = new string(new char[] { arr[i], arr[i + 1] });
+                    var lettr = Alfabet.Letters.Where(x => x.Arab == str).FirstOrDefault();
                     if (lettr == null)
                     {
-                        index = GetIndex(arr[i], arab: true);
+                        (int Ind, bool IsDouble)res = FindArab(str);
+
+                        if(res.Item1 != 0)
+                        {
+                            index = res.Ind;
+                            doubleLetter = res.IsDouble;
+                        }
+                        else
+                            index = GetIndex(arr[i], arab: true);
                     }
                     else
                     {
@@ -65,9 +167,8 @@ namespace AdishimBotApp.Services
                 }
                 else
                 {
-                    index = GetIndex(text[i], arab: true);
+                    index = GetIndex(arr[i], arab: true);
                 }
-                
                 if (index == 0)
                 {
                     if(arr[i] == '.')
@@ -85,13 +186,56 @@ namespace AdishimBotApp.Services
                     {
                         if (start)
                         {
-                            arr[i] = letter.UlyUp[0];
+                            char[] newarr = new char[arr.Length + 1];
+                            int intChar;
+                            for (int j = 0; j < newarr.Length; j++)
+                            {
+                                if (j < i - 1)
+                                {
+                                    intChar = arr[j];
+                                    newarr[j] = (char)intChar;
+
+                                }
+                                else if (j == i)
+                                {
+                                    newarr[j] = letter.UlyUp[0];
+                                    newarr[++j] = letter.UlyDown[1];
+                                }
+                                else
+                                {
+                                    intChar = arr[j - 1];
+                                    newarr[j] = (char)intChar;
+                                }
+                            }
+                            arr = newarr;
                             start = false;
                         }
                         else
                         {
-                            arr[i] = letter.CyrDown[0];
+                            char[] newarr = new char[arr.Length + 1];
+                            int intChar;
+                            for (int j = 0; j < newarr.Length; j++)
+                            {
+                                if (j < i)
+                                {
+                                    intChar = arr[j];
+                                    newarr[j] = (char)intChar;
+
+                                }
+                                else if (j == i)
+                                {
+                                    newarr[j] = letter.UlyDown[0];
+                                    newarr[++j] = letter.UlyDown[1];
+                                }
+                                else
+                                {
+                                    intChar = arr[j - 1];
+                                    newarr[j] = (char)intChar;
+                                }
+                            }
+                            arr = newarr;
                         }
+                        i++;
                         if (doubleLetter)
                         {
                             RemoveAt(ref arr, i + 1);

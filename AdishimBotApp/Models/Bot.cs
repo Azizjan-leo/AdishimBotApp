@@ -26,7 +26,7 @@ namespace AdishimBotApp.Models
 
         public static void Start()
         {
-            botClient.OnMessage += Csharpcornerbotmessage;
+            botClient.OnMessage += OnMessageReceive;
             botClient.StartReceiving();
         }
 
@@ -35,7 +35,7 @@ namespace AdishimBotApp.Models
         /// </summary>  
         /// <param name="sender"></param>  
         /// <param name="e"></param>  
-        private static void Csharpcornerbotmessage(object sender, MessageEventArgs e)
+        private static void OnMessageReceive(object sender, MessageEventArgs e)
         {
             if (e.Message.Type == MessageType.Text)
                 PrepareQuestionnaires(e);
