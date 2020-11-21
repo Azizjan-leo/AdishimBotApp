@@ -8,7 +8,7 @@ namespace AdishimBotApp.Commands
 {
     public class CyrToUlyCommand : Command
     {
-        public override List<string> Names => new List<string>() { @"/cyrtouly", "cyrtouly", @"/cyrtouly@adishimbot", "cyrtouly@adishimbot", "латинчә" };
+        public override List<string> Names => new List<string>() { @"/cyrtouly", "cyrtouly", @"/cyrtouly@adishimbot", "cyrtouly@adishimbot", "латинчә", "kirilllatinche", "kirill latinche" };
 
         public override async Task Execute(Message message, TelegramBotClient client)
         {

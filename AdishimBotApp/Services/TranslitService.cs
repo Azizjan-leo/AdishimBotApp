@@ -17,6 +17,10 @@ namespace AdishimBotApp.Services
             {
                 switch ((int)_letter)
                 {
+                    case 1548:
+                        return 35;
+                    case 1567:
+                        return 36;
                     case 1575:
                         return 8;
                     case 1576:
@@ -25,6 +29,8 @@ namespace AdishimBotApp.Services
                         return 29;
                     case 1580:
                         return 15;
+                    case 1582:
+                        return 33;
                     case 1583:
                         return 13;
                     case 1585:
@@ -75,6 +81,8 @@ namespace AdishimBotApp.Services
                         return 14;
                     case 1749:
                         return 9;
+                    case 65164:
+                        return 17;
                     case 65250:
                         return 22;
                     default:
@@ -106,7 +114,98 @@ namespace AdishimBotApp.Services
             return 0;
         }
 
-    
+        public static async Task<string> ArabToCyr(string text)
+        {
+            text = text.Replace('ﺍ', 'a').Replace('ﻭ', 'o').Replace('ﻩ', 'e');
+            bool start = true;
+
+            char[] arr = text.ToCharArray();
+            for (int i = 0; i < arr.Length; i++)
+            {
+                int index = 0;
+                bool doubleLetter = false;
+
+                if (arr[i] == 1567)
+                {
+                    arr[i] = '?';
+                    start = true;
+                    continue;
+                }
+
+                if (i < arr.Length - 1)
+                {
+                    if (arr[i] == 32)
+                        continue;
+                 
+                    var str = new string(new char[] { arr[i], arr[i + 1] });
+                    var lettr = Alfabet.Letters.Where(x => x.Arab == str).FirstOrDefault();
+                    if (lettr == null)
+                    {
+                        (int Ind, bool IsDouble) res = FindArab(str);
+
+                        if (res.Item1 != 0)
+                        {
+                            index = res.Ind;
+                            doubleLetter = res.IsDouble;
+                        }
+                        else
+                            index = GetIndex(arr[i], arab: true);
+                    }
+                    else
+                    {
+                        index = lettr.Index;
+                        doubleLetter = true;
+                    }
+                }
+                else
+                {
+                    index = GetIndex(arr[i], arab: true);
+                }
+                if (index == 0)
+                {
+                    if (arr[i] == '.' &&(i+1<=arr.Length && arr[i+1] == ' '))
+                    {
+                        start = true;
+                    }
+                    continue;
+                }
+
+                var letter = Alfabet.Letters.Where(x => x.Index == index).First();
+               
+                if (letter.Arab.Length == 1)
+                {
+                    if (start)
+                    {
+                        arr[i] = letter.CyrUp[0];
+                        start = false;
+                    }
+                    else
+                    {
+                        arr[i] = letter.CyrDown[0];
+                    }
+                }
+                else
+                {
+                    if (start)
+                    {
+                        arr[i] = letter.CyrUp[0];
+                        start = false;
+                    }
+                    else
+                    {
+                        arr[i] = letter.CyrDown[0];
+                    }
+                    if (doubleLetter)
+                    {
+                        RemoveAt(ref arr, i + 1);
+                    }
+                }
+               
+            }
+
+            return new string(arr);
+        }
+
         static (int, bool) FindArab(string str)
         {
             switch (str)
@@ -141,10 +240,19 @@ namespace AdishimBotApp.Services
             {
                 int index = 0;
                 bool doubleLetter = false;
+
+                if (arr[i] == 1567)
+                {
+                    arr[i] = '?';
+                    start = true;
+                    continue;
+                }
+
                 if (i < arr.Length - 1)
                 {
                     if (arr[i] == 32)
                         continue;
+
                     var str = new string(new char[] { arr[i], arr[i + 1] });
                     var lettr = Alfabet.Letters.Where(x => x.Arab == str).FirstOrDefault();
                     if (lettr == null)
@@ -376,7 +484,16 @@ namespace AdishimBotApp.Services
                             connNext = false;
                             continue;
                         }
-                        text[i] = letter.Arab[0];
+                        if(letter.Arab.Length > 1)
+                        {
+                            text[i] = letter.Arab[0];
+                            char[] arr = new char[text.Length + 1];
+                            Array.Copy(text, 0, arr, 0, text.Length);
+                            arr[i + 1] = letter.Arab[1];
+                            text = arr;
+                        }
+                        else
+                            text[i] = letter.Arab[0];
                     }
                     connNext = false;
                 }

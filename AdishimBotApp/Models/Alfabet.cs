@@ -19,9 +19,9 @@ namespace AdishimBotApp.Models
             new Letter(12, "Г", "г", "G", "g", "گ", "ﮔ", "ﮕ", "ﮓ", true, true, true), 
             new Letter(13, "Д", "д", "D", "d", "ﺩ", "ﺩ", "ﺪ", "ﺪ", false, false, true), 
             new Letter(14, "Е", "е", "Ё", "ё", "ﺋﯥ", "ﺋﯧ", "ﯧ", "ﯥ", true, true, true), 
-            new Letter(15, "Җ", "җ", "J", "j", "ﺝ", "ﭼ", "ﭽ", "ﭻ", true, true, true), 
+            new Letter(15, "Җ", "җ", "J", "j", "ﺝ", "ﺟ", "ﺠ", "ﺞ", true, true, true), 
             new Letter(16, "З", "з", "Z", "z", "ﺯ", "ﺯ", "ﺰ", "ﺰ", false, true, true), 
-            new Letter(17, "И", "и", "I", "i", "ﺋﻰ", "ﺋ", "ﺌ", "ﻰ", true, true, true), 
+            new Letter(17, "И", "и", "I", "i", "ﺋﻰ", "ﺋ", "ى", "ﻰ", true, true, true), 
             new Letter(18, "Й", "й", "Y", "y", "ﻱ", "ﻳ", "ﻴ", "ﻲ", true, true, true), 
             new Letter(19, "К", "к", "K", "k", "ﻙ", "ﻛ", "ﻜ", "ﻚ", true, true, true), 
             new Letter(20, "Қ", "қ", "Q", "q", "ﻕ", "ﻗ", "ﻘ", "ﻖ", true, true, true), 
@@ -38,7 +38,9 @@ namespace AdishimBotApp.Models
             new Letter(31, "Ү", "ү", "Ü", "ü", "ﺋﯜ", "ﺋﯜ", "ﯜ", "ﯜ", false, false, true), 
             new Letter(32, "Ф", "ф", "F", "f", "ﻑ", "ﻓ", "ﻔ", "ﻒ", true, true, true), 
             new Letter(33, "Х", "х", "X", "x", "ﺥ", "ﺧ", "ﺨ", "ﺦ", true, true, true),
-            new Letter(34, "Һ", "һ", "H", "h", "ﻫ", "ﻫ", "ﻬ", "ﮭ", true, true, true)
+            new Letter(34, "Һ", "һ", "H", "h", "ﻫ", "ﻫ", "ﻬ", "ﮭ", true, true, true),
+            new Letter(35, ",", ",", ",", ",", "،", "،", "،", "،", false, false, true),
+            new Letter(36, "?", "?", "?", "?", "؟", "؟", "؟", "؟", false, false, true)
         };       
     }
 }

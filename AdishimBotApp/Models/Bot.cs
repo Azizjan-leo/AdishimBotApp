@@ -12,7 +12,7 @@ namespace AdishimBotApp.Models
         /// <summary>  
         /// Declare Telegrambot object  
         /// </summary>  
-        private static readonly TelegramBotClient botClient = new TelegramBotClient(" ");
+        private static readonly TelegramBotClient botClient = new TelegramBotClient("");
 
         private static readonly List<Command> commands = new List<Command>()
         { 
@@ -22,6 +22,7 @@ namespace AdishimBotApp.Models
             new UlyToArabCommand(),
             new CyrToArabCommand(),
             new ArabToUlyCommand(),
+            new ArabToCyrCommand()
         };
 
         public static void Start()
@@ -48,11 +49,24 @@ namespace AdishimBotApp.Models
                 string messageTxt = e.Message.Text.ToLower();
                 foreach (var command in commands)
                 {
-                    if (command.Contains(messageTxt))
+                    if (!command.Contains(messageTxt))
+                        continue;
+
+                    if(command.RemoveCommand(messageTxt) != string.Empty)
                     {
                         command.Execute(e.Message, botClient);
                         break;
+                    }    
+                    if(e.Message.ReplyToMessage != null && e.Message.ReplyToMessage.Type == MessageType.Text)
+                    {
+                        var replyMsgTxt = e.Message.ReplyToMessage.Text;
+                        if(replyMsgTxt.Trim() != string.Empty)
+                        {
+                            command.Execute(e.Message.ReplyToMessage, botClient);
+                            break;
+                        }
                     }
+                    break;
                 }
             }
             catch (Exception ex)

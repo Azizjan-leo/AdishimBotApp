@@ -6,9 +6,9 @@ using Telegram.Bot.Types;
 
 namespace AdishimBotApp.Commands
 {
-    public class UlyToArabCommand : Command
+    public class ArabToCyrCommand : Command
     {
-        public override List<string> Names => new List<string>() { @"/ulytoarab", "ulytoarab", "erepche", "ﻻﺗﺌﻦ ﺋﻪﺭﻩﭘﭽﻪ", "ﻟﺎﺗىﻦ ﺋﻪﺭﻩﭘﭽﻪ", "ﻻﺗﺌﻨﻪﺭﻩﭘﭽﻪ" };
+        public override List<string> Names => new List<string>() { @"/arabtocyr", "arabtocyr", @"/arabtocyr@adishimbot", "arabtocyr@adishimbot", "ﻛىﺮﺋﻠﻠﭽﻪ", "әрәпкириллчә", "әрәп кириллчә" };
 
         public override async Task Execute(Message message, TelegramBotClient client)
         {
@@ -18,8 +18,7 @@ namespace AdishimBotApp.Commands
 
             text = RemoveCommand(text);
 
-            text = await TranslitService.UlyToArab(text);
-
+            text = await TranslitService.ArabToCyr(text);
             await client.SendTextMessageAsync(chatId, text, replyToMessageId: messageId);
         }
     }
