@@ -18,7 +18,7 @@ namespace AdishimBotApp.Commands
 
             text = RemoveCommand(text);
 
-            text = await TranslitService.ArabToUly(text);
+            text = TranslitService.ArabToUly2(text);
             await client.SendTextMessageAsync(chatId, text, replyToMessageId: messageId);
         }
     }
