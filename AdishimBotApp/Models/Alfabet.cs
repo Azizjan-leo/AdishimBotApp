@@ -5,11 +5,28 @@ namespace AdishimBotApp.Models
 {
     public static class Alfabet
     {
+        internal static string GetSpec(Letter letter)
+        {
+            switch (letter.CyrDown)
+            {
+                case "а":
+                    return "ﺍ";
+                case "о":
+                    return "ﻭ";
+                case "ә":
+                    return "ﻩ";
+                default:
+                    break;
+            }
+            return null;
+        }
   
-        internal static Letter GetLetter(string _letter, bool fromArab = false, bool isCyr = false)
+        internal static Letter GetLetter(string _letter, bool fromArab = false, bool fromCyr = false)
         {
             if (fromArab)
             {
+                Letter letter = default;
+
                 switch (_letter)
                 {
                     case "ئا":
@@ -30,18 +47,33 @@ namespace AdishimBotApp.Models
                         break;
                 }
               
-                foreach (var letter in Alfabet.Letters)
+                foreach (var item in Alfabet.Letters)
                 {
-                    if (letter.Arab == _letter || letter.ArabStart == _letter ||
-                        letter.ArabCenter == _letter || letter.ArabEnd == _letter)
-                        return letter;
+                    if (item.Arab == _letter || item.ArabStart == _letter ||
+                        item.ArabCenter == _letter || item.ArabEnd == _letter)
+                        return item;
                 }
-                var let = Letters.Where(x => x.CharCode.Contains(_letter[0])).FirstOrDefault();
 
-                return let;
+                if(_letter.Length == 1)
+                {
+                    letter = Letters.Where(x => x.CharCode.Contains(_letter[0])).FirstOrDefault();
+
+                    if (letter != null)
+                        return letter;
+
+                    string letter3 = new string(new char[] { _letter[0] });
+                    foreach (var item in Alfabet.Letters)
+                    {
+                        if (item.Arab == letter3 || item.ArabStart == letter3 ||
+                         item.ArabCenter == letter3 || item.ArabEnd == letter3)
+                            return item;
+                    }
+                }
+                
+                return letter;
 
             }
-            if (isCyr)
+            if (fromCyr)
             {
                 foreach (var letter in Alfabet.Letters)
                 {
@@ -62,8 +94,6 @@ namespace AdishimBotApp.Models
 
         public static Letter[] Letters =
         {
-            
-
             new Letter(1, "Ғ", "ғ", "GH", "gh", "ﻍ", "ﻏ", "ﻐ", "ﻎ", true, true, true, new int[]{ 1594 }),
             new Letter(2, "Ж", "ж", "ZH", "zh", "ژ", "ژ", "ﮋ", "ﮋ", false, false, true), 
             new Letter(3, "Ң", "ң", "NG", "ng", "ﯓ", "ﯕ", "ﯖ", "ﯔ", true, true, true, new int[]{1709 }), 
@@ -74,10 +104,10 @@ namespace AdishimBotApp.Models
             new Letter(8, "А", "а", "A", "a", "ﺋﺎ", "ﺋﺎ", "ﺎ", "ﺎ", false, false, true, new int[]{1575 }), 
             new Letter(9, "Ә", "ә", "E", "e", "ﺋﻪ", "ﺋﻪ", "ﻪ", "ﻪ", false, false, true, new int[]{1749 }), 
             new Letter(10, "Б", "б", "B", "b", "ﺏ", "ﺑ", "ﺒ", "ﺐ", true, true, true, new int[]{1739, 1576 }), 
-            new Letter(11, "В", "в", "W", "w", "ﯞ", "ﯞ", "ﯟ", "ﯟ", true, false, true), 
+            new Letter(11, "В", "в", "W", "w", "ﯞ", "ﯞ", "ﯟ", "ﯟ", false, false, true), 
             new Letter(12, "Г", "г", "G", "g", "گ", "ﮔ", "ﮕ", "ﮓ", true, true, true), 
             new Letter(13, "Д", "д", "D", "d", "ﺩ", "ﺩ", "ﺪ", "ﺪ", false, false, true, new int[]{1583 }), 
-            new Letter(14, "Е", "е", "Ё", "ё", "ﺋﯥ", "ﺋﯧ", "ﯧ", "ﯥ", true, true, true, new int[]{1744 }), 
+            new Letter(14, "Е", "е", "Ë", "ë", "ﺋﯥ", "ﺋﯧ", "ﯧ", "ﯥ", true, true, true, new int[]{1744 }), 
             new Letter(15, "Җ", "җ", "J", "j", "ﺝ", "ﺟ", "ﺠ", "ﺞ", true, true, true, new int[]{1580 }), 
             new Letter(16, "З", "з", "Z", "z", "ﺯ", "ﺯ", "ﺰ", "ﺰ", false, true, true, new int[]{1686, 1586 }), 
             new Letter(17, "И", "и", "I", "i", "ﺋﻰ", "ﺋ", "ى", "ﻰ", true, true, true, new int[]{65164, 1609, 1585 }), 
@@ -95,11 +125,14 @@ namespace AdishimBotApp.Models
             new Letter(29, "Т", "т", "T", "t", "ﺕ", "ﺗ", "ﺘ", "ﺖ", true, true, true, new int[]{1578 }), 
             new Letter(30, "У", "у", "U", "u", "ﺋﯘ", "ﺋﯘ", "ﯘ", "ﯘ", false, true, true, new int[]{1735 }), 
             new Letter(31, "Ү", "ү", "Ü", "ü", "ﺋﯜ", "ﺋﯜ", "ﯜ", "ﯜ", false, false, true, new int[]{1736 }), 
-            new Letter(32, "Ф", "ф", "F", "f", "ﻑ", "ﻓ", "ﻔ", "ﻒ", true, true, true), 
+            new Letter(32, "Ф", "ф", "F", "f", "ﻑ", "ﻓ", "ﻔ", "ﻒ", true, true, true, new int[]{ 65191 }), 
             new Letter(33, "Х", "х", "X", "x", "ﺥ", "ﺧ", "ﺨ", "ﺦ", true, true, true, new int[]{1582 }),
             new Letter(34, "Һ", "һ", "H", "h", "ﻫ", "ﻫ", "ﻬ", "ﮭ", true, true, true, new int[]{1726 }),
             new Letter(35, ",", ",", ",", ",", "،", "،", "،", "،", false, false, true, new int[]{1548 }),
-            new Letter(36, "?", "?", "?", "?", "؟", "؟", "؟", "؟", false, false, true, new int[]{1567 })
+            new Letter(36, "?", "?", "?", "?", "؟", "؟", "؟", "؟", false, false, true, new int[]{1567 }),
+            new Letter(37, "В", "в", "V", "v", "ﯞ", "ﯞ", "ﯟ", "ﯟ", false, false, true),
+            new Letter(38, "Ц", "ц", "C", "c", "ﺱ", "ﺳ", "ﺴ", "ﺲ", true, true, true),
+            new Letter(39, "Е", "е", "Ё", "ё", "ﺋﯥ", "ﺋﯧ", "ﯧ", "ﯥ", true, true, true, new int[]{1744 }),
         };       
     }
 }

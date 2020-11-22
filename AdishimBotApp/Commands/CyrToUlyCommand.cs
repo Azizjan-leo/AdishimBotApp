@@ -18,7 +18,7 @@ namespace AdishimBotApp.Commands
 
             text = RemoveCommand(text);
 
-            //text = await TranslitService.CyrToUly(text);
+            text = TranslitService.CyrToUly(text);
             await client.SendTextMessageAsync(chatId, text, replyToMessageId: messageId);
         }
     }
