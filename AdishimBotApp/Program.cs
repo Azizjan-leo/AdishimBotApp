@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System.Threading;
-using AdishimBotApp.Commands;
 using AdishimBotApp.Models;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using Microsoft.Extensions.Logging;
 
 namespace AdishimBotApp
 {
@@ -16,9 +11,34 @@ namespace AdishimBotApp
     {
         public static void Main(string[] args)
         {
+            //var host = CreateHostBuilder(args).Build();
+
+            //CreateDbIfNotExists(host);
+
+          
+
             Bot.Start();    
             CreateHostBuilder(args).Build().Run();
+            //host.Run();
         }
+
+        //private static void CreateDbIfNotExists(IHost host)
+        //{
+        //    using (var scope = host.Services.CreateScope())
+        //    {
+        //        var services = scope.ServiceProvider;
+        //        try
+        //        {
+        //            var context = services.GetRequiredService<ApplicationDbContext>();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            var logger = services.GetRequiredService<ILogger<Program>>();
+        //            logger.LogError(ex, "An error occurred creating the DB.");
+        //        }
+        //    }
+        //}
+
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)

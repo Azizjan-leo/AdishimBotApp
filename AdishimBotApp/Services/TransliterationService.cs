@@ -3,7 +3,7 @@ using AdishimBotApp.Models;
 
 namespace AdishimBotApp.Services
 {
-    public static class TranslitService
+    public static class TransliterationService
     {
 
         public static string FromArab(string text, bool toUly)
