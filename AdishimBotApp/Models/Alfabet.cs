@@ -1,5 +1,4 @@
-﻿
-using System.Linq;
+﻿using System.Linq;
 
 namespace AdishimBotApp.Models
 {
@@ -43,6 +42,9 @@ namespace AdishimBotApp.Models
                         return Letters.Where(x => x.Index == 30).First();
                     case "ئۈ":
                         return Letters.Where(x => x.Index == 31).First();
+                    case "ئو":
+                        return Letters.Where(x => x.Index == 24).First();
+
                     default:
                         break;
                 }
@@ -110,7 +112,7 @@ namespace AdishimBotApp.Models
             new Letter(14, "Е", "е", "Ë", "ë", "ﺋﯥ", "ﺋﯧ", "ﯧ", "ﯥ", true, true, true, new int[]{1744 }), 
             new Letter(15, "Җ", "җ", "J", "j", "ﺝ", "ﺟ", "ﺠ", "ﺞ", true, true, true, new int[]{1580 }), 
             new Letter(16, "З", "з", "Z", "z", "ﺯ", "ﺯ", "ﺰ", "ﺰ", false, true, true, new int[]{1686, 1586 }), 
-            new Letter(17, "И", "и", "I", "i", "ﺋﻰ", "ﺋ", "ى", "ﻰ", true, true, true, new int[]{65164, 1609, 1585 }), 
+            new Letter(17, "И", "и", "I", "i", "ﺋﻰ", "ﺋ", "ى", "ﻰ", true, true, true, new int[]{65164, 1609 }), 
             new Letter(18, "Й", "й", "Y", "y", "ﻱ", "ﻳ", "ﻴ", "ﻲ", true, true, true, new int[]{1610 }), 
             new Letter(19, "К", "к", "K", "k", "ﻙ", "ﻛ", "ﻜ", "ﻚ", true, true, true, new int[]{1603 }), 
             new Letter(20, "Қ", "қ", "Q", "q", "ﻕ", "ﻗ", "ﻘ", "ﻖ", true, true, true, new int[]{1602 }), 
@@ -120,7 +122,7 @@ namespace AdishimBotApp.Models
             new Letter(24, "О", "о", "O", "o", "ﺋﻮ", "ﺋﻮ", "ﻮ", "ﻮ", false, false, true, new int[]{1608 }), 
             new Letter(25, "Ө", "ө", "Ö", "ö", "ﺋﯚ", "ﺋﯚ", "ﯚ", "ﯚ", false, false, true, new int[]{1734 }), 
             new Letter(26, "П", "п", "P", "p", "ﭖ", "ﭘ", "ﭙ", "ﭗ", true, true, true, new int[]{1662 }), 
-            new Letter(27, "Р", "р", "R", "r", "ﺭ", "ﺭ", "ﺮ", "ﺮ", false, false, true), 
+            new Letter(27, "Р", "р", "R", "r", "ﺭ", "ﺭ", "ﺮ", "ﺮ", false, false, true, new int[]{ 1585 }), 
             new Letter(28, "С", "с", "S", "s", "ﺱ", "ﺳ", "ﺴ", "ﺲ", true, true, true, new int[]{1587 }), 
             new Letter(29, "Т", "т", "T", "t", "ﺕ", "ﺗ", "ﺘ", "ﺖ", true, true, true, new int[]{1578 }), 
             new Letter(30, "У", "у", "U", "u", "ﺋﯘ", "ﺋﯘ", "ﯘ", "ﯘ", false, true, true, new int[]{1735 }), 

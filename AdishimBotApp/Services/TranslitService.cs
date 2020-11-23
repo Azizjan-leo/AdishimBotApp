@@ -13,7 +13,7 @@ namespace AdishimBotApp.Services
             bool start = true;
 
             text = toUly ? text.Replace('ﺍ', 'a').Replace('ﻭ', 'o').Replace('ﻩ', 'e') : text.Replace('ﺍ', 'а').Replace('ﻭ', 'о').Replace('ﻩ', 'ә');
-
+       
             for (int i = 0; i < text.Length; i++)
             {
 
