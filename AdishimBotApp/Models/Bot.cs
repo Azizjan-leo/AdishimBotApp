@@ -4,6 +4,7 @@ using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Args;
 using System;
+using System.Threading.Tasks;
 
 namespace AdishimBotApp.Models
 {
@@ -25,7 +26,9 @@ namespace AdishimBotApp.Models
             new ArabToCyrCommand(),
             new AddWordCommand(),
             new TranslateUyCommand(),
-            new TranslateRuCommand()
+            new TranslateRuCommand(),
+            new AddWordsCommand(),
+            new GameCommand()
         };
 
         public static void Start()
@@ -42,41 +45,54 @@ namespace AdishimBotApp.Models
         private static void OnMessageReceive(object sender, MessageEventArgs e)
         {
             if (e.Message.Type == MessageType.Text)
-                PrepareQuestionnaires(e);
+                    PrepareQuestionnaires(e);
         }
 
-        public static void PrepareQuestionnaires(MessageEventArgs e)
+        public static async void PrepareQuestionnaires(MessageEventArgs e)
         {
             try
             {
                 string messageTxt = e.Message.Text.ToLower();
+                var gc = new GameCommand();
+
+                if (e.Message.ReplyToMessage != null && e.Message.ReplyToMessage.Type == MessageType.Text && e.Message.ReplyToMessage.From.IsBot == true
+                    && e.Message.ReplyToMessage.Text.Contains("Oyun bashlandi!"))
+                {
+                    await gc.Execute(e.Message, botClient);
+                    return;
+                }
+
                 foreach (var command in commands)
                 {
-                    if (!command.Contains(messageTxt))
+                    if (e.Message.ReplyToMessage != null && e.Message.ReplyToMessage.Type == MessageType.Text && command.Contains(e.Message.ReplyToMessage.Text.ToLower()))
+                    {
+                        await command.Execute(e.Message, botClient);
+                        break;
+                    }
+
+                        if (!command.Contains(messageTxt))
                         continue;
 
-                    if(command.RemoveCommand(messageTxt) != string.Empty)
+                    if(command.RemoveCommand(messageTxt) != string.Empty || command.Names.Contains(@"/addwords@AdishimBot"))
                     {
-                        command.Execute(e.Message, botClient);
-                        break;
+                        await command.Execute(e.Message, botClient);
                     }    
+
                     if(e.Message.ReplyToMessage != null && e.Message.ReplyToMessage.Type == MessageType.Text)
                     {
                         var replyMsgTxt = e.Message.ReplyToMessage.Text;
                         if(replyMsgTxt.Trim() != string.Empty)
                         {
-                            command.Execute(e.Message.ReplyToMessage, botClient);
-                            break;
+                            await command.Execute(e.Message.ReplyToMessage, botClient);
+                            return;
                         }
                     }
-                    break;
                 }
             }
             catch (Exception ex)
             {
                 Logger.Messages.Add(ex.Message);
             }
-
         }
     }
 }

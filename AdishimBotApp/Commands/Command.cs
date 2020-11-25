@@ -17,8 +17,10 @@ namespace AdishimBotApp.Commands
             {
                 text = text.Replace(name, "", true, null);
             }
+
             if (text != string.Empty)
                 return (text[0] == ' ') ? text.Remove(0, 1) : text;
+
             return string.Empty;
         }
 

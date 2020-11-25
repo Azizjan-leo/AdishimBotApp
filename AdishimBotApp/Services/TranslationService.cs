@@ -1,4 +1,5 @@
-﻿using AdishimBotApp.Models;
+﻿using AdishimBotApp.Extantions;
+using AdishimBotApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,77 +26,99 @@ namespace AdishimBotApp.Services
         /// <returns>
         /// -1 for null obj or number of the saved objects
         /// </returns>
-        public async Task<int> AddWords(List<Word> words)
+        public async Task<TaskResult> AddWords(List<Word> words)
         {
-            ApplicationDbContext _context = new ApplicationDbContext(); 
+            ApplicationDbContext _context = new ApplicationDbContext();
+
+            //var list = await _context.Words.ToListAsync();
+            //foreach (var word in list)
+            //{
+            //    if (word.RuText[0] == ' ')
+            //        word.RuText = word.RuText.Remove(0, 1);
+            //    if (word.UrText[0] == ' ')
+            //        word.UrText = word.UrText.Remove(0, 1);
+            //    word.Capitalize();
+            //    _context.Entry(word).State = EntityState.Modified;
+            //}
+            //await _context.SaveChangesAsync();
+
 
             if (words == null || words.Count() == 0)
-                return -1;
+                return new TaskResult (false,"No words were forwarded");
+
+            var result = new TaskResult(true, "");
 
             foreach (var word in words)
             {
                 try
                 {
+                    word.Capitalize();
                     _context.Words.Add(word);
                      await _context.SaveChangesAsync();
                 }
                 catch (Exception e)
                 {
                     string msg = e.Message;
+                    result.IsSuccess = false;
+                    result.Msg += msg + "\n\n";
                 }
             }
-            return await _context.SaveChangesAsync();
+
+            return result;
         }
 
-        private async Task<Word> TryTranslate(string text, bool fromRu)
+        private async Task<List<Word>> TryTranslate(string text, bool fromRu)
         {
-            ApplicationDbContext _context = new ApplicationDbContext();
+            var _context = new ApplicationDbContext();
 
-            return await(fromRu ? _context.Words.FirstOrDefaultAsync(x => x.RuText == text)
-                : _context.Words.FirstOrDefaultAsync(x => x.UrText == text));
+            return await(fromRu ? _context.Words.Where(x => x.RuText == text).ToListAsync()
+                : _context.Words.Where(x => x.UrText == text).ToListAsync());
         }
 
-        public async Task<Word> Translate(string text, bool fromRu)
+        public async Task<List<Word>> Translate(string text, bool fromRu)
         {
             if (text == null || text.Length == 0)
                 return null;
     
 
-            Word result;
+            List<Word> resultList = new List<Word>();
+            
+            var tmp = await TryTranslate(text, fromRu);
+            resultList.AddRange(tmp);
 
-            result = await TryTranslate(text, fromRu);
+            //  var text1 = TransliterationService.CyrToArab(text);
+            //  tmp = await TryTranslate(text1, fromRu);
+            //  resultList.AddRange(tmp);
 
-            if(result == null)
-                text = TransliterationService.CyrToArab(text);
+            //  var text2 = TransliterationService.CyrToUly(text);
+            //  tmp = await TryTranslate(text2, fromRu);
+            //  resultList.AddRange(tmp);
 
-            result = await TryTranslate(text, fromRu);
 
-            if (result == null)
-                text = TransliterationService.CyrToUly(text);
+            //  var text3 = TransliterationService.FromArab(text, toUly: true);
+            //  tmp = await TryTranslate(text3, fromRu);
+            //  resultList.AddRange(tmp);
 
-            result = await TryTranslate(text, fromRu);
 
-            if (result == null)
-                text = TransliterationService.FromArab(text, toUly: true);
+            //  var text4 = TransliterationService.FromArab(text, toUly: false);
+            //  tmp = await TryTranslate(text4, fromRu);
+            //  resultList.AddRange(tmp);
 
-            result = await TryTranslate(text, fromRu);
 
-            if (result == null)
-                text = TransliterationService.FromArab(text, toUly: false);
+            //  var text5 = TransliterationService.UlyToArab(text);
+            //  tmp = await TryTranslate(text5, fromRu);
+            //  resultList.AddRange(tmp);
 
-            result = await TryTranslate(text, fromRu);
 
-            if (result == null)
-                text = TransliterationService.UlyToArab(text);
+            //      text = TransliterationService.UlyToCyr(text);
+            //  tmp = await TryTranslate(text, fromRu);
+            //resultList.AddRange(tmp);
 
-            result = await TryTranslate(text, fromRu);
-
-            if (result == null)
-                text = TransliterationService.UlyToCyr(text);
-
-            result = await TryTranslate(text, fromRu);
-
-            return result;
+            foreach (var item in resultList)
+            {
+                item.Capitalize();
+            }
+            return resultList;
         }
     }
 }
