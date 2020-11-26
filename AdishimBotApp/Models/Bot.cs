@@ -14,6 +14,7 @@ namespace AdishimBotApp.Models
         /// Declare Telegrambot object  
         /// </summary>  
         private static readonly TelegramBotClient botClient = new TelegramBotClient("");
+        public static readonly string BotName = "@AdishimBot";
 
         private static readonly List<Command> commands = new List<Command>()
         {
@@ -28,7 +29,8 @@ namespace AdishimBotApp.Models
             new TranslateUyCommand(),
             new TranslateRuCommand(),
             new AddWordsCommand(),
-            new GameCommand()
+            new GameStartCommand(),
+            new GetRatingCommand(),
         };
 
         public static void Start()
@@ -50,48 +52,10 @@ namespace AdishimBotApp.Models
 
         public static async void PrepareQuestionnaires(MessageEventArgs e)
         {
-            try
+            foreach (var command in commands)
             {
-                string messageTxt = e.Message.Text.ToLower();
-                var gc = new GameCommand();
-
-                if (e.Message.ReplyToMessage != null && e.Message.ReplyToMessage.Type == MessageType.Text && e.Message.ReplyToMessage.From.IsBot == true
-                    && e.Message.ReplyToMessage.Text.Contains("Oyun bashlandi!"))
-                {
-                    await gc.Execute(e.Message, botClient);
-                    return;
-                }
-
-                foreach (var command in commands)
-                {
-                    if (e.Message.ReplyToMessage != null && e.Message.ReplyToMessage.Type == MessageType.Text && command.Contains(e.Message.ReplyToMessage.Text.ToLower()))
-                    {
-                        await command.Execute(e.Message, botClient);
-                        break;
-                    }
-
-                        if (!command.Contains(messageTxt))
-                        continue;
-
-                    if(command.RemoveCommand(messageTxt) != string.Empty || command.Names.Contains(@"/addwords@AdishimBot"))
-                    {
-                        await command.Execute(e.Message, botClient);
-                    }    
-
-                    if(e.Message.ReplyToMessage != null && e.Message.ReplyToMessage.Type == MessageType.Text)
-                    {
-                        var replyMsgTxt = e.Message.ReplyToMessage.Text;
-                        if(replyMsgTxt.Trim() != string.Empty)
-                        {
-                            await command.Execute(e.Message.ReplyToMessage, botClient);
-                            return;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Messages.Add(ex.Message);
+                if (await command.TryExecute(e, botClient))
+                    break;
             }
         }
     }

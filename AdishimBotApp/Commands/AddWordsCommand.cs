@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Telegram.Bot;
+using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 
 namespace AdishimBotApp.Commands
@@ -56,8 +57,26 @@ namespace AdishimBotApp.Commands
                 return;
             }
 
-            await client.SendTextMessageAsync(chatId, "Moshu xetige jawapta sözlerni yëzing, merhemet.", replyToMessageId: msgId);
 
+        }
+
+        public override async Task<bool> TryExecute(MessageEventArgs e, TelegramBotClient client)
+        {
+            var msg = e.Message;
+
+            if (msg.Text.Contains(Names[0]))
+            {
+                await client.SendTextMessageAsync(e.Message.Chat.Id, "Moshu xetige jawapta sözlerni yëzing, merhemet.", replyToMessageId: msg.MessageId);
+                return true;
+            }
+
+            if(msg.ReplyToMessage != null && msg.ReplyToMessage.Text == Names[1] && msg.ReplyToMessage.From.IsBot)
+            {
+                await Execute(msg, client);
+                return true;
+            }
+
+            return false;
         }
     }
 }

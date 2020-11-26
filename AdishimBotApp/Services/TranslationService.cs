@@ -30,18 +30,6 @@ namespace AdishimBotApp.Services
         {
             ApplicationDbContext _context = new ApplicationDbContext();
 
-            //var list = await _context.Words.ToListAsync();
-            //foreach (var word in list)
-            //{
-            //    if (word.RuText[0] == ' ')
-            //        word.RuText = word.RuText.Remove(0, 1);
-            //    if (word.UrText[0] == ' ')
-            //        word.UrText = word.UrText.Remove(0, 1);
-            //    word.Capitalize();
-            //    _context.Entry(word).State = EntityState.Modified;
-            //}
-            //await _context.SaveChangesAsync();
-
 
             if (words == null || words.Count() == 0)
                 return new TaskResult (false,"No words were forwarded");
@@ -55,12 +43,10 @@ namespace AdishimBotApp.Services
                     word.Capitalize();
                     _context.Words.Add(word);
                      await _context.SaveChangesAsync();
+                    result.Msg += $"{word.UrText} - {word.RuText}\n\n";
                 }
                 catch (Exception e)
-                {
-                    string msg = e.Message;
-                    result.IsSuccess = false;
-                    result.Msg += msg + "\n\n";
+                {                    
                 }
             }
 

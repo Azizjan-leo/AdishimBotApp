@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using AdishimBotApp.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Telegram.Bot;
+using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 
 namespace AdishimBotApp.Commands
@@ -19,8 +21,12 @@ namespace AdishimBotApp.Commands
             }
 
             if (text != string.Empty)
-                return (text[0] == ' ') ? text.Remove(0, 1) : text;
-
+            {
+                text = text.Replace(Bot.BotName, "");
+                if(text != string.Empty)
+                    return (text[0] == ' ') ? text.Remove(0, 1) : text;
+            }
+                
             return string.Empty;
         }
 
@@ -35,5 +41,7 @@ namespace AdishimBotApp.Commands
             }
             return false;
         }
+
+        public abstract Task<bool> TryExecute(MessageEventArgs e, TelegramBotClient client);
     }
 }

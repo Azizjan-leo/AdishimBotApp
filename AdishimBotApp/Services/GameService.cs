@@ -9,6 +9,25 @@ namespace AdishimBotApp.Services
 {
     public static class GameService
     {
+        public static async Task<TaskResult> GetRating(long chatId, string getter)
+        {
+            var context = new ApplicationDbContext();
+
+            try
+            {
+                var result = await context.Games.Where(x => x.ChatId == chatId && x.WinnerUsername == getter && x.Closed).ToListAsync();
+                int count = result?.Count() ?? 0;
+
+                return new TaskResult(true, $"Sizning reytigingiz: {count}");
+            }
+            catch(Exception e)
+            {
+                return new TaskResult(true, $"Xata: {e.Message}\n\n{e.InnerException.Message}");
+            }
+
+
+        }
+
         public static async Task<TaskResult> CheckAnswer(long chatId, string answer, string answerer)
         {
             var context = new ApplicationDbContext();
@@ -55,7 +74,7 @@ namespace AdishimBotApp.Services
         
             if(lastGame.Closed == false)
             {
-                return new TaskResult(false, "Toghra emes :(");
+                return new TaskResult(false, "Natoghra");
             }
 
        
