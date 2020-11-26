@@ -134,7 +134,7 @@ namespace AdishimBotApp.Services
                             continue;
                         }
 
-                        if (text[i + 1] == '?' || text[i + 1] == '!' || text[i + 1] == ',' || Alfabet.GetLetter(text[1 + 1].ToString(), fromCyr: true) == null)
+                        if (text[i + 1] == '?' || text[i + 1] == '!' || text[i + 1] == ',' || Alfabet.GetLetter(text[i + 1].ToString(), fromCyr: true) == null)
                         {
                             result += connNext ? letter.ArabEnd : letter.Arab;
                             continue;
@@ -144,7 +144,7 @@ namespace AdishimBotApp.Services
                     }
                     connNext = letter.ConnNext;
                 }
-            }
+            }  
             return result;
         }
 
