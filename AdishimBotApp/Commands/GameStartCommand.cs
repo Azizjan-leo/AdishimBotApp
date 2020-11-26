@@ -4,22 +4,19 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
 
 namespace AdishimBotApp.Commands
 {
     public class GameStartCommand : Command
     {
-        public override List<string> Names => new List<string>() { @"/gamestart@AdishimBot", "Oynayli", "Ойнайли", "Oyun bashlandi!" };
+        public override List<string> Names => new List<string>() { @"/gamestart@AdishimBot", "Oynayli", "Ойнайли" };
 
         public override async Task Execute(Message msg, TelegramBotClient client)
         {
-            var chatId = msg.Chat.Id;
-            var messageId = msg.MessageId;
-            
+            var chatId = msg.Chat.Id;            
 
             var res2 = await GameService.Start(chatId);
-            await client.SendTextMessageAsync(chatId, res2.Msg, replyToMessageId: messageId);
+            await client.SendTextMessageAsync(chatId, res2.Msg);
         }
 
         private async Task CheckAnswer(Message msg, TelegramBotClient client)
@@ -31,7 +28,14 @@ namespace AdishimBotApp.Commands
 
             var res = await GameService.CheckAnswer(chatId, msgText, author);
 
-            await client.SendTextMessageAsync(chatId, res.Msg, replyToMessageId: messageId);
+            if (res != null)
+            {
+                _ = await client.SendTextMessageAsync(chatId, res.Msg, replyToMessageId: messageId);
+
+                if(res.IsSuccess)
+                    await Execute(msg, client);
+            }
+
             return;
         }
 
@@ -39,12 +43,8 @@ namespace AdishimBotApp.Commands
         {
             var msg = e.Message;
 
-            if ((msg.ReplyToMessage != null && msg.ReplyToMessage.Type == MessageType.Text && msg.ReplyToMessage.From.IsBot == true)
-              && (msg.ReplyToMessage.Text.Contains("Oyun bashlandi!") || msg.ReplyToMessage.Text.Contains("Oyun boliwatidu")))
-            {
-                await CheckAnswer(msg, client);
-                return true;
-            }
+            await CheckAnswer(msg, client);
+            
 
             foreach (var name in Names)
             {

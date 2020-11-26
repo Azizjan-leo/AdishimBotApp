@@ -1,4 +1,5 @@
-﻿using AdishimBotApp.Models;
+﻿using AdishimBotApp.Extantions;
+using AdishimBotApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace AdishimBotApp.Services
 {
     public static class GameService
     {
-        public static async Task<TaskResult> GetRating(long chatId, string getter)
+        public static async Task<int> GetRating(long chatId, string getter)
         {
             var context = new ApplicationDbContext();
 
@@ -18,25 +19,43 @@ namespace AdishimBotApp.Services
                 var result = await context.Games.Where(x => x.ChatId == chatId && x.WinnerUsername == getter && x.Closed).ToListAsync();
                 int count = result?.Count() ?? 0;
 
-                return new TaskResult(true, $"Sizning reytigingiz: {count}");
+                return count;
             }
             catch(Exception e)
             {
-                return new TaskResult(true, $"Xata: {e.Message}\n\n{e.InnerException.Message}");
+                return -1;
+            }
+        }
+
+        public static async Task<TaskResult> Stop(long chatId)
+        {
+            var context = new ApplicationDbContext();
+
+            var lastGame = await context.Games.Where(x => x.ChatId == chatId && x.Closed == false).OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+
+            if(lastGame != null)
+            {
+                lastGame.EndUtc = DateTime.UtcNow;
+                lastGame.Closed = true;
+                context.Entry(lastGame).State = EntityState.Modified;
+
+                await context.SaveChangesAsync();
+
+                return new TaskResult(true, $"Tamam 😌");
             }
 
-
+            return new TaskResult(false, $"Bashlangan oyunlar yoq 🙂");
         }
 
         public static async Task<TaskResult> CheckAnswer(long chatId, string answer, string answerer)
         {
             var context = new ApplicationDbContext();
 
-            var lastGame = await context.Games.OrderByDescending(x => x.ChatId == chatId && x.Closed == false).FirstOrDefaultAsync();
+            var lastGame = await context.Games.Where(x => x.ChatId == chatId && x.Closed == false).OrderByDescending(x => x.Id).FirstOrDefaultAsync();
 
             if (lastGame == null)
             {
-                return new TaskResult(false, "Bashlighan oyuni yoq");
+                return null;
             }
 
             var words = new List<Word>();
@@ -54,6 +73,8 @@ namespace AdishimBotApp.Services
             {
                 return new TaskResult(false, $"123 Xata boldi. Administratorni chaqiringlar.");
             }
+
+            answer = answer.FirstCharToUpper();
 
             if (lastGame.Type == GameType.RuToUy)
             {
@@ -74,7 +95,7 @@ namespace AdishimBotApp.Services
         
             if(lastGame.Closed == false)
             {
-                return new TaskResult(false, "Natoghra");
+                return null;
             }
 
        
@@ -82,8 +103,8 @@ namespace AdishimBotApp.Services
             lastGame.EndUtc = DateTime.UtcNow;
             context.Entry(lastGame).State = EntityState.Modified;
             await context.SaveChangesAsync();
-            
-            return new TaskResult(true, "Toghra jawap! ✨");
+            var rating = await GetRating(chatId, answerer);
+            return new TaskResult(true, $"Toghra jawap! ✨\n\nRëytingingiz: {rating}");
         }
         
         public static async Task<TaskResult> Start(long chatId)

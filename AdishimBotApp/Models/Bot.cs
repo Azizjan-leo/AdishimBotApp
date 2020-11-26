@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Args;
-using System;
-using System.Threading.Tasks;
 
 namespace AdishimBotApp.Models
 {
@@ -13,7 +11,7 @@ namespace AdishimBotApp.Models
         /// <summary>  
         /// Declare Telegrambot object  
         /// </summary>  
-        private static readonly TelegramBotClient botClient = new TelegramBotClient("");
+        private static readonly TelegramBotClient client = new TelegramBotClient("");
         public static readonly string BotName = "@AdishimBot";
 
         private static readonly List<Command> commands = new List<Command>()
@@ -31,12 +29,13 @@ namespace AdishimBotApp.Models
             new AddWordsCommand(),
             new GameStartCommand(),
             new GetRatingCommand(),
+            new GameStopCommand()
         };
 
         public static void Start()
         {
-            botClient.OnMessage += OnMessageReceive;
-            botClient.StartReceiving();
+            client.OnMessage += OnMessageReceive;
+            client.StartReceiving();
         }
 
         /// <summary>  
@@ -54,7 +53,7 @@ namespace AdishimBotApp.Models
         {
             foreach (var command in commands)
             {
-                if (await command.TryExecute(e, botClient))
+                if (await command.TryExecute(e, client))
                     break;
             }
         }

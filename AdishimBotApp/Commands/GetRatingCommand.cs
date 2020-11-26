@@ -18,7 +18,7 @@ namespace AdishimBotApp.Commands
 
             var answer = await GameService.GetRating(chatId, message.From.Username);
 
-            await client.SendTextMessageAsync(chatId, answer.Msg, replyToMessageId: messageId);
+            await client.SendTextMessageAsync(chatId, $"Rëytingingiz: {answer}", replyToMessageId: messageId);
 
         }
 
