@@ -12,7 +12,6 @@ namespace AdishimBotApp.Models
         public DateTime? EndUtc { get; set; }
         public string Question { get; set; }
         public GameType Type { get; set; }
-        public string RightAnswer { get; set; }
         public string WinnerUsername { get; set; }
         public bool Closed { get; set; }
     }

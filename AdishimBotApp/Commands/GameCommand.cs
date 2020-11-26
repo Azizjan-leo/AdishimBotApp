@@ -21,13 +21,13 @@ namespace AdishimBotApp.Commands
             {
                 var res = await GameService.CheckAnswer(chatId, msgText, author);
 
-                if (res.IsSuccess == true)
-                    await client.SendTextMessageAsync(chatId, res.Msg, replyToMessageId: messageId);
+
+                await client.SendTextMessageAsync(chatId, res.Msg, replyToMessageId: messageId);
                 return;
             }
 
             var res2 = await GameService.Start(chatId);
-                await client.SendTextMessageAsync(chatId, res2.Msg, replyToMessageId: messageId);
+            await client.SendTextMessageAsync(chatId, res2.Msg, replyToMessageId: messageId);
 
         }
     }

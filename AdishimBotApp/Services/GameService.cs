@@ -15,30 +15,69 @@ namespace AdishimBotApp.Services
 
             var lastGame = await context.Games.OrderByDescending(x => x.ChatId == chatId && x.Closed == false).FirstOrDefaultAsync();
 
-            if(lastGame == null)
+            if (lastGame == null)
             {
                 return new TaskResult(false, "Bashlighan oyuni yoq");
             }
 
-            if(lastGame.RightAnswer != answer)
+            var words = new List<Word>();
+
+            if (lastGame.Type == GameType.RuToUy)
+            {
+                words = await context.Words.Where(x => x.RuText == lastGame.Question).ToListAsync();
+            }
+            else if (lastGame.Type == GameType.UyToRu)
+            {
+                words = await context.Words.Where(x => x.UrText == lastGame.Question).ToListAsync();
+            }
+
+            if (words == null)
+            {
+                return new TaskResult(false, $"123 Xata boldi. Administratorni chaqiringlar.");
+            }
+
+            if (lastGame.Type == GameType.RuToUy)
+            {
+                foreach (var word in words)
+                {
+                    if (word.UrText == answer)
+                        lastGame.Closed = true;
+                }
+            }
+            else if (lastGame.Type == GameType.UyToRu)
+            {
+                foreach (var word in words)
+                {
+                    if (word.RuText == answer)
+                        lastGame.Closed = true;
+                }
+            }
+        
+            if(lastGame.Closed == false)
             {
                 return new TaskResult(false, "Toghra emes :(");
             }
 
-            lastGame.Closed = true;
-            lastGame.RightAnswer = answerer;
+       
+            lastGame.WinnerUsername = answerer;
             lastGame.EndUtc = DateTime.UtcNow;
             context.Entry(lastGame).State = EntityState.Modified;
             await context.SaveChangesAsync();
             
             return new TaskResult(true, "Toghra jawap! ✨");
         }
+        
         public static async Task<TaskResult> Start(long chatId)
         {
             var context = new ApplicationDbContext();
-            
-            var lastGame = await context.Games.Where(x=> x.Id == chatId).OrderByDescending(x => x.Id).FirstOrDefaultAsync();
 
+            var openGame = await context.Games.Where(x => x.ChatId == chatId && !x.Closed).FirstOrDefaultAsync();
+            if(openGame != null)
+            {
+                return new TaskResult(false, $"Oyun boliwatidu. Soal: {openGame.Question}");
+            }
+            var lastGame = await context.Games.Where(x=> x.ChatId == chatId).OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+            
             if(lastGame == null || lastGame.Closed)
             {
                 var wordsMax = await context.Words.OrderByDescending(x => x.Id).FirstOrDefaultAsync();
@@ -71,12 +110,12 @@ namespace AdishimBotApp.Services
                 string answer = null;
                 if(gameType == GameType.UyToRu)
                 {
-                    question = $"{word.UrText} rusche qandaq deydu?";
+                    question = $"{word.UrText}";
                     answer = word.RuText;
                 }
                 else
                 {
-                    question = $"{word.RuText} uyghurche qandaq deydu?";
+                    question = $"{word.RuText}";
                     answer = word.UrText;
                 }
 
@@ -86,14 +125,21 @@ namespace AdishimBotApp.Services
                     StartUtc = DateTime.UtcNow,
                     Question = question,
                     Type = gameType,
-                    RightAnswer = answer,
                     Closed = false
                 };
 
                 context.Games.Add(newGame);
                 await context.SaveChangesAsync();
 
-                return new TaskResult(true, $"{question}\n\nOyun bashlandi! 😃");
+                switch (newGame.Type)
+                {
+                    case GameType.RuToUy:
+                        return new TaskResult(true, $"{question} uyghurche qandaq deydu ?\n\nOyun bashlandi! 😃");
+                    case GameType.UyToRu:
+                        return new TaskResult(true, $"{question} rusche qandaq deydu ?\n\nOyun bashlandi! 😃");
+                    default:
+                        break;
+                }
             }
 
             return new TaskResult(false, "Oyun boliwatidu! 😅");
