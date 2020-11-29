@@ -12,7 +12,7 @@ namespace AdishimBotApp.Commands
 {
     public class TranslateRuCommand : Command
     {
-        public override List<string> Names => new List<string>() { @"/touyghur@AdishimBot", "uyghurche", "уйғурчә", "по-уйгурски" };
+        public override List<string> Names => new List<string>() { @"/touyghur", "uyghurche", "уйғурчә", "по-уйгурски" };
 
         public override async Task Execute(Message message, TelegramBotClient client)
         {
@@ -41,7 +41,7 @@ namespace AdishimBotApp.Commands
             var msg = e.Message;
             foreach (var name in Names)
             {
-                if (msg.Text.Contains(name))
+                if (msg.Text.Contains(name) || msg.Text.Contains(Names[0] + Bot.BotName))
                 {
                     var woCommand = RemoveCommand(msg.Text);
                     if (!string.IsNullOrEmpty(woCommand))

@@ -1,4 +1,5 @@
-﻿using AdishimBotApp.Services;
+﻿using AdishimBotApp.Models;
+using AdishimBotApp.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -10,7 +11,7 @@ namespace AdishimBotApp.Commands
 {
     public class ArabToUlyCommand : Command
     {
-        public override List<string> Names => new List<string>() { "/arabtouly@AdishimBot", "ﻻﺗﺌﻨﭽﻪ", "ereplatinche", "erep latinche" };
+        public override List<string> Names => new List<string>() { "/arabtouly", "ﻻﺗﺌﻨﭽﻪ", "ereplatinche", "erep latinche" };
 
         public override async Task Execute(Message message, TelegramBotClient client)
         {
@@ -29,7 +30,7 @@ namespace AdishimBotApp.Commands
             var msg = e.Message;
             foreach (var name in Names)
             {
-                if (msg.Text.Contains(name))
+                if (msg.Text.Contains(name) || msg.Text.Contains(Names[0] + Bot.BotName))
                 {
                     var woCommand = RemoveCommand(msg.Text);
                     if (!string.IsNullOrEmpty(woCommand))

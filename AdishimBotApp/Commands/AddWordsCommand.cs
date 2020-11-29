@@ -64,7 +64,7 @@ namespace AdishimBotApp.Commands
         {
             var msg = e.Message;
 
-            if (msg.Text.Contains(Names[0]))
+            if (msg.Text.Contains(Names[0]) || msg.Text.Contains(Names[0] + Bot.BotName))
             {
                 await client.SendTextMessageAsync(e.Message.Chat.Id, "Moshu xetige jawapta sözlerni yëzing, merhemet.", replyToMessageId: msg.MessageId);
                 return true;

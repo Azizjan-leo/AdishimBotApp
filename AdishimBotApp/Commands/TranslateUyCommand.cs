@@ -1,4 +1,5 @@
-﻿using AdishimBotApp.Services;
+﻿using AdishimBotApp.Models;
+using AdishimBotApp.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace AdishimBotApp.Commands
 {
     public class TranslateUyCommand : Command
     {
-        public override List<string> Names => new List<string>() { @"/torussian@AdishimBot", "по-русски", "русчә", "rusche" };
+        public override List<string> Names => new List<string>() { @"/torussian", "по-русски", "русчә", "rusche" };
 
         public override async Task Execute(Message message, TelegramBotClient client)
         {
@@ -39,7 +40,7 @@ namespace AdishimBotApp.Commands
             var msg = e.Message;
             foreach (var name in Names)
             {
-                if (msg.Text.Contains(name))
+                if (msg.Text.Contains(name) || msg.Text.Contains(Names[0] + Bot.BotName))
                 {
                     var woCommand = RemoveCommand(msg.Text);
                     if (!string.IsNullOrEmpty(woCommand))

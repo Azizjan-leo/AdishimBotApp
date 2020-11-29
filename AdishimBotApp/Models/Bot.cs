@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Telegram.Bot;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Args;
+using Telegram.Bot.Types.ReplyMarkups;
+using System;
+using AdishimBotApp.Services;
 
 namespace AdishimBotApp.Models
 {
@@ -29,13 +32,91 @@ namespace AdishimBotApp.Models
             new AddWordsCommand(),
             new GameStartCommand(),
             new GetRatingCommand(),
-            new GameStopCommand()
+            new GameStopCommand(),
+            new StartCrocodileCommand(),
+            new StopCrocodileCommand()
         };
 
         public static void Start()
         {
-            client.OnMessage += OnMessageReceive;
+            client.OnMessage += OnMessageReceived;
+            client.OnCallbackQuery += BotOnCallbackQueryReceived;
             client.StartReceiving();
+        }
+
+        private async static void BotOnCallbackQueryReceived(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
+        {
+            var callbackQuery = callbackQueryEventArgs.CallbackQuery;
+            try
+            {
+                InlineKeyboardMarkup inlineKeyboard;
+                if (callbackQuery.Data == "NewGame")
+                {
+                    var res1 = await GameService.CrocoStart(callbackQuery.Message.Chat.Id, callbackQuery.From);
+
+                    if (res1.IsSuccess == true)
+                    {
+                        inlineKeyboard = new InlineKeyboardMarkup(new[]
+                            {
+                                new []
+                                {
+                                    InlineKeyboardButton.WithCallbackData("Söz", "NewWord")
+                                }
+                            }
+                        );
+                        await client.SendTextMessageAsync(
+                             chatId: callbackQuery.Message.Chat.Id,
+                             text: $"{res1.Msg}",
+                             replyMarkup: inlineKeyboard,
+                             parseMode: ParseMode.MarkdownV2
+                        );
+
+                    }
+                    else
+                    {
+                        await client.AnswerCallbackQueryAsync(
+                              callbackQueryId: callbackQuery.Id,
+                              text: $"Oyun boliwatidu 🙃",
+                              showAlert: true
+                        );
+                    }
+
+                    return;
+                }
+
+                var res = await GameService.CrocoNewWord(callbackQuery.Message.Chat.Id, callbackQuery.From.Id);
+
+                if (res.IsSuccess == true)
+                {
+                    inlineKeyboard = new InlineKeyboardMarkup(new[]
+                          {
+                                new []
+                                {
+                                    InlineKeyboardButton.WithCallbackData("Yëngi söz", "NewWord")
+                                }
+                            }
+                      );
+
+                    try
+                    {
+                        await client.EditMessageTextAsync(callbackQuery.Message.Chat.Id, messageId: callbackQuery.Message.MessageId, $"Oyun bashlandi\\! [Bëshi](tg://user?id={callbackQuery.From.Id})", replyMarkup: inlineKeyboard, parseMode: ParseMode.MarkdownV2);
+
+                    }
+                    catch (Exception)
+                    {
+                    }
+
+                }
+                await client.AnswerCallbackQueryAsync(
+                      callbackQueryId: callbackQuery.Id,
+                      text: $"{res.Msg}",
+                      showAlert: true
+                  );
+            }
+            catch (Exception e)
+            {
+            }
+
         }
 
         /// <summary>  
@@ -43,10 +124,10 @@ namespace AdishimBotApp.Models
         /// </summary>  
         /// <param name="sender"></param>  
         /// <param name="e"></param>  
-        private static void OnMessageReceive(object sender, MessageEventArgs e)
+        private static void OnMessageReceived(object sender, MessageEventArgs e)
         {
             if (e.Message.Type == MessageType.Text)
-                    PrepareQuestionnaires(e);
+                PrepareQuestionnaires(e);
         }
 
         public static async void PrepareQuestionnaires(MessageEventArgs e)

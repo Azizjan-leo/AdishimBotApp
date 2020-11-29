@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AdishimBotApp.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Args;
@@ -8,7 +9,7 @@ namespace AdishimBotApp.Commands
 {
     public class HelloCommand : Command
     {
-        public override List<string> Names => new List<string>() { @"/salam@AdishimBot", "salam", "Essalamu eleyküm!", "Әссаламу әләйкүм!" };
+        public override List<string> Names => new List<string>() { @"/salam", "salam", "Essalamu eleyküm!", "Әссаламу әләйкүм!" };
 
         public override async Task Execute(Message message, TelegramBotClient client)
         {
@@ -25,7 +26,7 @@ namespace AdishimBotApp.Commands
 
             foreach (var name in Names)
             {
-                if (msg.Text.Contains(name))
+                if (msg.Text.Contains(name) || msg.Text.Contains(Names[0] + Bot.BotName))
                 {
                     await Execute(msg, client);
                    
