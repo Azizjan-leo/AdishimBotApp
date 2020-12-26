@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Text;
+using AdishimBotApp.Extantions;
 using AdishimBotApp.Models;
 
 namespace AdishimBotApp.Services
 {
     public static class TransliterationService
     {
-
+            
         public static string FromArab(string text, bool toUly)
         {
             var result = string.Empty;
@@ -144,8 +146,9 @@ namespace AdishimBotApp.Services
                     }
                     connNext = letter.ConnNext;
                 }
-            }  
-            return result;
+            }
+
+            return result;//.NormalizeArab();
         }
 
         public static string UlyToArab(string text)
@@ -244,7 +247,6 @@ namespace AdishimBotApp.Services
 
         public static string CyrToUly(string str)
         {
-
             foreach (var letter in Alfabet.Letters)
             {
                 str = str.Replace(letter.CyrUp, letter.UlyUp);

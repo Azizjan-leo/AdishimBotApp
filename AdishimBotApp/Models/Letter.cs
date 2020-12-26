@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
+﻿
 namespace AdishimBotApp.Models
 {
     public class Letter
@@ -11,12 +7,18 @@ namespace AdishimBotApp.Models
         public readonly string Arab, ArabStart, ArabCenter, ArabEnd, CyrUp, CyrDown, UlyUp, UlyDown;
         public readonly bool ConnNext, IsCenter, IsLast;
         public readonly int[] CharCode;
+        public readonly char[] ArabChar;
 
-        public Letter(int index, string cyrUp, string cyrDown, string ulyUp, string ulyDown, 
+        public Letter(int index, int[] arabChar, string cyrUp, string cyrDown, string ulyUp, string ulyDown, 
                         string arab, string arabStart, string arabCenter, string arabEnd,
                         bool connNext, bool isCenter, bool isLast, int[] charCode = null)
         {
             Index = index;
+            ArabChar = new char[arabChar.Length];
+            for (int i = 0; i < arabChar.Length; i++)
+            {
+                ArabChar[i] = (char)arabChar[i];
+            }
             Arab = arab;
             ArabStart = arabStart;
             ArabCenter = arabCenter;
