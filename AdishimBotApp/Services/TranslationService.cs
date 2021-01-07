@@ -10,15 +10,7 @@ namespace AdishimBotApp.Services
 {
     public class TranslationService
     {
-        //private readonly ApplicationDbContext _context;
-        //public TranslationService(ApplicationDbContext context)
-        //{
-        //    _context = context;
-        //}
-        //void lol()
-        //{
-        //    ApplicationDbContext d = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>());
-        //}
+    
         /// <summary>
         /// Adds the given word to database.
         /// </summary>
@@ -71,34 +63,6 @@ namespace AdishimBotApp.Services
             
             var tmp = await TryTranslate(text, fromRu);
             resultList.AddRange(tmp);
-
-            //  var text1 = TransliterationService.CyrToArab(text);
-            //  tmp = await TryTranslate(text1, fromRu);
-            //  resultList.AddRange(tmp);
-
-            //  var text2 = TransliterationService.CyrToUly(text);
-            //  tmp = await TryTranslate(text2, fromRu);
-            //  resultList.AddRange(tmp);
-
-
-            //  var text3 = TransliterationService.FromArab(text, toUly: true);
-            //  tmp = await TryTranslate(text3, fromRu);
-            //  resultList.AddRange(tmp);
-
-
-            //  var text4 = TransliterationService.FromArab(text, toUly: false);
-            //  tmp = await TryTranslate(text4, fromRu);
-            //  resultList.AddRange(tmp);
-
-
-            //  var text5 = TransliterationService.UlyToArab(text);
-            //  tmp = await TryTranslate(text5, fromRu);
-            //  resultList.AddRange(tmp);
-
-
-            //      text = TransliterationService.UlyToCyr(text);
-            //  tmp = await TryTranslate(text, fromRu);
-            //resultList.AddRange(tmp);
 
             foreach (var item in resultList)
             {

@@ -34,7 +34,7 @@ namespace AdishimBotApp.Models
             new GetRatingCommand(),
             new GameStopCommand(),
             new StartCrocodileCommand(),
-            new StopCrocodileCommand()
+            new StopCrocodileCommand(),
         };
 
         public static void Start()

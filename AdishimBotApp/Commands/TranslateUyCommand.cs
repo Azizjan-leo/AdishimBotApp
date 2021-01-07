@@ -25,11 +25,11 @@ namespace AdishimBotApp.Commands
             if (res?.Count() > 0)
             {
                 string reply = "";
-                for (int i = 0; i < res.Count(); i++)
+                foreach (var word in res)
                 {
-                    reply += $"{i + 1}. {res[i].RuText}\n\n";
+                    reply += $"<b>{word.RuText}</b> <code>({word.Id})</code>\n\n";
                 }
-                await client.SendTextMessageAsync(chatId, $"{reply}", replyToMessageId: messageId);
+                await client.SendTextMessageAsync(chatId, reply, replyToMessageId: messageId, parseMode: ParseMode.Html);
             }
             else
                 await client.SendTextMessageAsync(chatId, $"Hëch nersini tapalmidim 🤷‍♂️", replyToMessageId: messageId);

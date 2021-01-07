@@ -1,5 +1,4 @@
 ﻿using AdishimBotApp.Extantions;
-using System.Collections.Generic;
 
 namespace AdishimBotApp.Models
 {
