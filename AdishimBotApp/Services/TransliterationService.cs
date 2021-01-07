@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Text;
-using AdishimBotApp.Extantions;
 using AdishimBotApp.Models;
 
 namespace AdishimBotApp.Services
