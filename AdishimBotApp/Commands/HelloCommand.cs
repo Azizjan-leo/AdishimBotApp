@@ -29,7 +29,7 @@ namespace AdishimBotApp.Commands
                 if (msg.Text.Contains(name) || msg.Text.Contains(Names[0] + Bot.BotName))
                 {
                     await Execute(msg, client);
-                   
+                    return true;
                 }
             }
 
