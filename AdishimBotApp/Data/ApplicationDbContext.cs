@@ -10,7 +10,7 @@ namespace AdishimBotApp
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=SQL5104.site4now.net;Initial Catalog=db_a73dec_adishimdb;User Id=db_a73dec_adishimdb_admin;Password=Ittipak005!!");
+            optionsBuilder.UseSqlServer("");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
