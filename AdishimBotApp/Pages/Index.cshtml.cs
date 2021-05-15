@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.IO;    // For StreamReader
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
@@ -19,6 +17,16 @@ namespace AdishimBotApp.Pages
         public List<string> MSG { get; set; }
         public void OnGet()
         {
+            try {
+                var request = (HttpWebRequest)WebRequest.Create("http://azizjan-001-site3.etempurl.com/Alerter");
+                var response = (HttpWebResponse)request.GetResponse();
+            } catch (System.Exception e) {
+
+            }
+           
+
+            //var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
             MSG = Logger.Messages;
         }
     }

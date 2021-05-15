@@ -14,7 +14,7 @@ namespace AdishimBotApp.Models
         /// <summary>  
         /// Declare Telegrambot object  
         /// </summary>  
-        private static readonly TelegramBotClient client = new TelegramBotClient("1404340694:AAFHdeLuVAPURdqOjSI8tZAGXIVLn34n7K4");
+        private static readonly TelegramBotClient client = new TelegramBotClient("1404340694:AAE7lSEhRXakhQBZL3bzvi-sCtX9F3I3fSY");
         public static readonly string BotName = "@AdishimBot";
 
         private static readonly List<Command> commands = new List<Command>()
