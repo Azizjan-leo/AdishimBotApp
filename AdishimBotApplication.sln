@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdishimBotApp", "AdishimBotApp\AdishimBotApp.csproj", "{3BA6F161-A609-4A85-9948-27560246E8B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{1A9E0820-F121-4DF0-8929-AF0AE135108B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,18 +27,6 @@ Global
 		{3BA6F161-A609-4A85-9948-27560246E8B4}.Release|x64.Build.0 = Release|Any CPU
 		{3BA6F161-A609-4A85-9948-27560246E8B4}.Release|x86.ActiveCfg = Release|Any CPU
 		{3BA6F161-A609-4A85-9948-27560246E8B4}.Release|x86.Build.0 = Release|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Debug|x64.Build.0 = Debug|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Debug|x86.Build.0 = Debug|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Release|x64.ActiveCfg = Release|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Release|x64.Build.0 = Release|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Release|x86.ActiveCfg = Release|Any CPU
-		{1A9E0820-F121-4DF0-8929-AF0AE135108B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
