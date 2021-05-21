@@ -108,7 +108,7 @@ namespace AdishimBotApp.Services
             if (wordsMax == null)
                 return null;
 
-            Random rd = new Random();
+            Random rd = new();
             Word word = null;
 
             for (int i = 0; i < 10000; i++)
@@ -130,7 +130,7 @@ namespace AdishimBotApp.Services
             try
             {
                 var result = await context.Games.Where(x => x.ChatId == chatId && x.WinnerUserId == getter.Id && x.Closed).ToListAsync();
-                int count = result?.Count() ?? 0;
+                int count = result?.Count ?? 0;
 
                 return count;
             }
