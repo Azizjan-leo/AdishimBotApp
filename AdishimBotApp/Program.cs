@@ -26,6 +26,12 @@ var me = await botClient.GetMeAsync();
 
 Console.WriteLine($"Start listening for @{me.Username}");
 
+//to make the program endless :D
+while (true)
+{
+
+}
+
 // Send cancellation request to stop bot
 //cts.Cancel();
 
@@ -46,7 +52,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
     // Echo received message text
     Message sentMessage = await botClient.SendTextMessageAsync(
         chatId: chatId,
-        text: "You said:\n" + messageText,
+        text: "You said: " + messageText,
         cancellationToken: cancellationToken);
 }
 
