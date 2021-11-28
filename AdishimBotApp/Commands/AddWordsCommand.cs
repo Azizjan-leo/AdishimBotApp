@@ -9,6 +9,7 @@ using Telegram.Bot.Types;
 
 namespace AdishimBotApp.Commands
 {
+    /*
     public class AddWordsCommand : Command
     {
         public override List<string> Names => new List<string>() { @"/addwords@AdishimBot", "Moshu xetige jawapta sözlerni yëzing, merhemet." };
@@ -79,4 +80,5 @@ namespace AdishimBotApp.Commands
             return false;
         }
     }
+    */
 }

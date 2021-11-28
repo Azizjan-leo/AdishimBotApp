@@ -9,6 +9,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace AdishimBotApp.Commands
 {
+    /*
     public class CyrToUlyCommand : Command
     {
         public override List<string> Names => new List<string>() { @"/cyrtouly", "латинчә", "kirilllatinche", "kirill latinche" };
@@ -52,4 +53,5 @@ namespace AdishimBotApp.Commands
             return false;
         }
     }
+    */
 }
