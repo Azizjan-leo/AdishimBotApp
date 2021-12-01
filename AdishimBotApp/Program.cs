@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using AdishimBotApp.Models;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using Microsoft.Extensions.Logging;
+using System.Threading;
 
 namespace AdishimBotApp
 {
@@ -11,13 +9,13 @@ namespace AdishimBotApp
     {
         public static void Main(string[] args)
         {
+            using var cts = new CancellationTokenSource();
+
             //var host = CreateHostBuilder(args).Build();
 
             //CreateDbIfNotExists(host);
 
-          
-
-            Bot.Start();    
+            Bot.Start(cts);    
             CreateHostBuilder(args).Build().Run();
             //host.Run();
         }
