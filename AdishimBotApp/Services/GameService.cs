@@ -1,23 +1,17 @@
 ﻿using AdishimBotApp.Extantions;
-using AdishimBotApp.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Telegram.Bot.Types;
 using Game = AdishimBotApp.Models.Game;
 
 namespace AdishimBotApp.Services
 {
-    public static class GameService
+    public class GameService
     {
         #region Croco
-
         public static async Task<TaskResult> CrocoStart(long chatId, User user)
         {
             var context = new ApplicationDbContext();
-
             var openGame = await context.Games.Where(x => x.ChatId == chatId && x.Type == GameType.UrCroco && !x.Closed).FirstOrDefaultAsync();
             if (openGame != null)
             {
@@ -125,10 +119,10 @@ namespace AdishimBotApp.Services
         #endregion
         public static async Task<int> GetRating(long chatId, User getter)
         {
-            var context = new ApplicationDbContext();
-
             try
             {
+                var context = new ApplicationDbContext();
+
                 var result = await context.Games.Where(x => x.ChatId == chatId && x.WinnerUserId == getter.Id && x.Closed).ToListAsync();
                 int count = result?.Count ?? 0;
 

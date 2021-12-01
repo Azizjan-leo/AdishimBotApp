@@ -1,7 +1,14 @@
+global using System;
+global using System.Threading;
+global using System.Threading.Tasks;
+global using Telegram.Bot;
+global using Telegram.Bot.Types;
+global using Telegram.Bot.Types.Enums;
+global using AdishimBotApp.Models;
+global using AdishimBotApp.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using AdishimBotApp.Models;
-using System.Threading;
+
 
 namespace AdishimBotApp
 {
@@ -14,7 +21,7 @@ namespace AdishimBotApp
             //var host = CreateHostBuilder(args).Build();
 
             //CreateDbIfNotExists(host);
-
+                  
             Bot.Start(cts);    
             CreateHostBuilder(args).Build().Run();
             //host.Run();

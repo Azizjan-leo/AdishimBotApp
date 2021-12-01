@@ -1,19 +1,11 @@
 ﻿using AdishimBotApp.Commands;
 using System.Collections.Generic;
-using Telegram.Bot;
-using Telegram.Bot.Types.Enums;
-using Telegram.Bot.Types.ReplyMarkups;
-using System;
-using AdishimBotApp.Services;
-using System.Threading;
 using Telegram.Bot.Extensions.Polling;
-using System.Threading.Tasks;
 using Telegram.Bot.Exceptions;
-using Telegram.Bot.Types;
 
 namespace AdishimBotApp.Models
 {
-    public static class Bot
+    public class Bot
     {
         /// <summary>  
         /// Declare Telegrambot object  
@@ -22,7 +14,7 @@ namespace AdishimBotApp.Models
 
         public static readonly string BotName = "@AdishimBot";
 
-        private static readonly List<Command> commands = new List<Command>()
+        private static readonly List<Command> commands = new ()
         {
             new HelloCommand(),
             new CyrToUlyCommand(),
@@ -155,7 +147,7 @@ namespace AdishimBotApp.Models
         /// <param name="e"></param>  
         private static async Task OnMessageReceived(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            if (update.Type == UpdateType.Message) 
+            if (update.Type == UpdateType.Message && update.Message.Text != null) 
             {
                 foreach (var command in commands)
                 {

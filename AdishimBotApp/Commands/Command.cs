@@ -1,9 +1,4 @@
-﻿using AdishimBotApp.Models;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Types;
+﻿using System.Collections.Generic;
 
 namespace AdishimBotApp.Commands
 {

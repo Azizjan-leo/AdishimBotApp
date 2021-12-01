@@ -7,26 +7,30 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace AdishimBotApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201126070943_GameRightAnswerOut")]
-    partial class GameRightAnswerOut
+    [Migration("20211201164809_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("AdishimBotApp.Models.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<long>("ChatId")
                         .HasColumnType("bigint");
@@ -43,11 +47,14 @@ namespace AdishimBotApp.Migrations
                     b.Property<DateTime>("StartUtc")
                         .HasColumnType("datetime2");
 
+                    b.Property<long>("StarterUserId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<string>("WinnerUsername")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("WinnerUserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -58,11 +65,12 @@ namespace AdishimBotApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AuthorId")
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<long>("AuthorId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("RuText")
                         .HasColumnType("nvarchar(450)");

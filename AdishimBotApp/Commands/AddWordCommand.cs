@@ -1,11 +1,4 @@
-﻿using AdishimBotApp.Models;
-using AdishimBotApp.Services;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Types;
+﻿using System.Collections.Generic;
 
 namespace AdishimBotApp.Commands
 {
@@ -31,10 +24,10 @@ namespace AdishimBotApp.Commands
             {
                 UrText = words[0],
                 RuText = words[1],
-                AuthorId = 0//msg.From.Id
+                AuthorId = msg.From.Id
             };
-            var ts = new TranslationService();
-            var result = await ts.AddWords(new List<Word>() { newWord });
+
+            var result = await TranslationService.AddWords(new List<Word>() { newWord });
                         
             var response = result.IsSuccess ? "Rexmet, yadlap aldim! 😊" : result.Msg;
             await client.SendTextMessageAsync(chatId, response, replyToMessageId: msgId);

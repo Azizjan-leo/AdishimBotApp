@@ -1,19 +1,13 @@
-﻿using AdishimBotApp.Models;
-using AdishimBotApp.Services;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Args;
-using Telegram.Bot.Types;
+﻿using System.Collections.Generic;
 using Telegram.Bot.Types.ReplyMarkups;
 
 namespace AdishimBotApp.Commands
 {
     public class StartCrocodileCommand : Command
     {
-        public override List<string> Names => new List<string>() { @"/startcrocodile", "Timsah oynayli", "Timsaq oynayli", "Тимсаһ ойнайли", "Тимсақ ойнайли" };
+        public override List<string> Names => new () { @"/startcrocodile", "Timsah oynayli", "Timsaq oynayli", "Тимсаһ ойнайли", "Тимсақ ойнайли" };
 
-        public override async Task Execute(Message msg, TelegramBotClient client)
+        public override async Task Execute(Message msg, ITelegramBotClient client)
         {
             var chatId = msg.Chat.Id;
 
@@ -37,22 +31,21 @@ namespace AdishimBotApp.Commands
                    text: res.Msg,
                    replyMarkup: inlineKeyboard,
                    replyToMessageId: msg.MessageId,
-                   parseMode: Telegram.Bot.Types.Enums.ParseMode.MarkdownV2
+                   parseMode: ParseMode.MarkdownV2
                );
 
         }
+             
 
-     
-
-        public override async Task<bool> TryExecute(MessageEventArgs e, TelegramBotClient client)
+        public override async Task<bool> TryExecute(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            var msg = e.Message;
+            var msg = update.Message;
             
             foreach (var name in Names)
             {
                 if (msg.Text.Contains(name) || msg.Text.Contains(Names[0] + Bot.BotName))
                 {
-                    await Execute(msg, client);
+                    await Execute(msg, botClient);
                     return true;
                 }
             }
