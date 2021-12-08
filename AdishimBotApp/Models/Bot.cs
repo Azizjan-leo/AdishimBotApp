@@ -10,7 +10,7 @@ namespace AdishimBotApp.Models
         /// <summary>  
         /// Declare Telegrambot object  
         /// </summary>  
-        private static readonly TelegramBotClient client = new ("1404340694:AAHhDCig4m70DTyUxm9iBP-4994U8VfOY7A");
+        private static readonly TelegramBotClient client = new ("");
 
         public static readonly string BotName = "@AdishimBot";
 
@@ -33,6 +33,30 @@ namespace AdishimBotApp.Models
             new StartCrocodileCommand(),
             new StopCrocodileCommand(),
         };
+
+        /// <summary>  
+        /// Handle bot webhook  
+        /// </summary>  
+        /// <param name="sender"></param>  
+        /// <param name="e"></param>  
+        private static async Task OnMessageReceived(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        {
+            try
+            {
+                if (update.Type == UpdateType.Message && update.Message.Text != null)
+                {
+                    foreach (var command in commands)
+                    {
+                        if (await command.TryExecute(botClient, update, cancellationToken))
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
+        }
 
         public static void Start(CancellationTokenSource cts)
         {
@@ -61,7 +85,7 @@ namespace AdishimBotApp.Models
                 _ => exception.ToString()
             };
 
-            Console.WriteLine(ErrorMessage);
+            //Console.WriteLine(ErrorMessage);
             return Task.CompletedTask;
         }
 
@@ -140,21 +164,6 @@ namespace AdishimBotApp.Models
 
         //}
 
-        /// <summary>  
-        /// Handle bot webhook  
-        /// </summary>  
-        /// <param name="sender"></param>  
-        /// <param name="e"></param>  
-        private static async Task OnMessageReceived(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
-        {
-            if (update.Type == UpdateType.Message && update.Message.Text != null) 
-            {
-                foreach (var command in commands)
-                {
-                    if (await command.TryExecute(botClient, update, cancellationToken))
-                        break;
-                }
-            }
-        }
+        
     }
 }

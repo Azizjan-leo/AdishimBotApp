@@ -1,10 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace AdishimBotApp.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,16 +14,16 @@ namespace AdishimBotApp.Migrations
                 name: "Games",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ChatId = table.Column<long>(type: "bigint", nullable: false),
                     StarterUserId = table.Column<long>(type: "bigint", nullable: false),
-                    StartUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Question = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type = table.Column<int>(type: "int", nullable: false),
+                    StartUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Question = table.Column<string>(type: "text", nullable: true),
+                    Type = table.Column<int>(type: "integer", nullable: false),
                     WinnerUserId = table.Column<long>(type: "bigint", nullable: false),
-                    Closed = table.Column<bool>(type: "bit", nullable: false)
+                    Closed = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,10 +34,10 @@ namespace AdishimBotApp.Migrations
                 name: "Words",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UrText = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    RuText = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UrText = table.Column<string>(type: "text", nullable: true),
+                    RuText = table.Column<string>(type: "text", nullable: true),
                     AuthorId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -47,8 +49,7 @@ namespace AdishimBotApp.Migrations
                 name: "IX_Words_RuText_UrText",
                 table: "Words",
                 columns: new[] { "RuText", "UrText" },
-                unique: true,
-                filter: "[RuText] IS NOT NULL AND [UrText] IS NOT NULL");
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
