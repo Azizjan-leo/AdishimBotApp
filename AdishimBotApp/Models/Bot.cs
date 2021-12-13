@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Telegram.Bot.Extensions.Polling;
 using Telegram.Bot.Exceptions;
+using System.Linq;
 
 namespace AdishimBotApp.Models
 {
@@ -31,7 +32,7 @@ namespace AdishimBotApp.Models
             new GetRatingCommand(),
             new GameStopCommand(),
             new StartCrocodileCommand(),
-            new StopCrocodileCommand(),
+            new StopCrocodileCommand()
         };
 
         /// <summary>  
@@ -43,6 +44,12 @@ namespace AdishimBotApp.Models
         {
             try
             {
+                if (update.Message is not null && update.Message.Type == MessageType.ChatMembersAdded)
+                {
+                    var welcomeCommand = new GroupJoinCommand();
+                    await welcomeCommand.TryExecute(botClient, update, cancellationToken);
+                    return;
+                }
                 if (update.Type == UpdateType.Message && update.Message.Text != null)
                 {
                     foreach (var command in commands)
