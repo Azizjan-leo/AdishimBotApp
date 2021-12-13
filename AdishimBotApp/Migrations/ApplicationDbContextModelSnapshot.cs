@@ -3,8 +3,10 @@ using System;
 using AdishimBotApp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
+#nullable disable
 
 namespace AdishimBotApp.Migrations
 {
@@ -15,40 +17,42 @@ namespace AdishimBotApp.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("AdishimBotApp.Models.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<long>("ChatId")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("Closed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("EndUtc")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Question")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("StartUtc")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("StarterUserId")
-                        .HasColumnType("int");
+                    b.Property<long>("StarterUserId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Type")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    b.Property<int>("WinnerUserId")
-                        .HasColumnType("int");
+                    b.Property<long>("WinnerUserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -59,23 +63,23 @@ namespace AdishimBotApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("integer");
 
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<long>("AuthorId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("RuText")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UrText")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RuText", "UrText")
-                        .IsUnique()
-                        .HasFilter("[RuText] IS NOT NULL AND [UrText] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Words");
                 });

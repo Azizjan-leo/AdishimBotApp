@@ -1,9 +1,4 @@
-﻿using AdishimBotApp.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Args;
-using Telegram.Bot.Types;
+﻿using System.Collections.Generic;
 
 namespace AdishimBotApp.Commands
 {
@@ -11,7 +6,7 @@ namespace AdishimBotApp.Commands
     {
         public abstract List<string> Names { get; }
 
-        public abstract Task Execute(Message message, TelegramBotClient client);
+        public abstract Task Execute(Message message, ITelegramBotClient botClient);
 
         public string RemoveCommand(string text)
         {
@@ -42,6 +37,6 @@ namespace AdishimBotApp.Commands
             return false;
         }
 
-        public abstract Task<bool> TryExecute(MessageEventArgs e, TelegramBotClient client);
+        public abstract Task<bool> TryExecute(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken);
     }
 }

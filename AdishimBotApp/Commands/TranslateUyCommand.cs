@@ -1,28 +1,19 @@
-﻿using AdishimBotApp.Models;
-using AdishimBotApp.Services;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Telegram.Bot;
-using Telegram.Bot.Args;
-using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
+﻿using System.Collections.Generic;
 
 namespace AdishimBotApp.Commands
 {
     public class TranslateUyCommand : Command
     {
-        public override List<string> Names => new List<string>() { @"/torussian", "по-русски", "русчә", "rusche" };
+        public override List<string> Names => new () { @"/torussian", "по-русски", "русчә", "rusche" };
 
-        public override async Task Execute(Message message, TelegramBotClient client)
+        public override async Task Execute(Message message, ITelegramBotClient client)
         {
             var chatId = message.Chat.Id;
             var messageId = message.MessageId;
             var text = RemoveCommand(message.Text).Replace("\n", "");
 
-            var ts = new TranslationService();
-            var res = await ts.Translate(text, fromRu: false);
-            if (res?.Count() > 0)
+            var res = await TranslationService.Translate(text, fromRu: false);
+            if (res?.Count > 0)
             {
                 string reply = "";
                 foreach (var word in res)
@@ -35,9 +26,9 @@ namespace AdishimBotApp.Commands
                 await client.SendTextMessageAsync(chatId, $"Hëch nersini tapalmidim 🤷‍♂️", replyToMessageId: messageId);
         }
 
-        public override async Task<bool> TryExecute(MessageEventArgs e, TelegramBotClient client)
+        public override async Task<bool> TryExecute(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            var msg = e.Message;
+            var msg = update.Message;
             foreach (var name in Names)
             {
                 if (msg.Text.Contains(name) || msg.Text.Contains(Names[0] + Bot.BotName))
@@ -45,14 +36,14 @@ namespace AdishimBotApp.Commands
                     var woCommand = RemoveCommand(msg.Text);
                     if (!string.IsNullOrEmpty(woCommand))
                     {
-                        await Execute(msg, client);
+                        await Execute(msg, botClient);
                         return true;
                     }
                     else
                     {
                         if (msg.ReplyToMessage != null && msg.ReplyToMessage.Type == MessageType.Text)
                         {
-                            await Execute(msg.ReplyToMessage, client);
+                            await Execute(msg.ReplyToMessage, botClient);
                             return true;
                         }
                     }

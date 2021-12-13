@@ -1,16 +1,12 @@
-﻿using AdishimBotApp.Extantions;
-using AdishimBotApp.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AdishimBotApp.Services
 {
-    public class TranslationService
+    public static class TranslationService
     {
-    
+
         /// <summary>
         /// Adds the given word to database.
         /// </summary>
@@ -18,13 +14,11 @@ namespace AdishimBotApp.Services
         /// <returns>
         /// -1 for null obj or number of the saved objects
         /// </returns>
-        public async Task<TaskResult> AddWords(List<Word> words)
+        public static async Task<TaskResult> AddWords(List<Word> words)
         {
-            ApplicationDbContext _context = new ApplicationDbContext();
-
-
-            if (words == null || words.Count() == 0)
-                return new TaskResult (false,"No words were forwarded");
+            var context = new ApplicationDbContext();
+            if (words == null || words.Count == 0)
+                return new TaskResult(false, "No words were forwarded");
 
             var result = new TaskResult(true, "");
 
@@ -33,34 +27,33 @@ namespace AdishimBotApp.Services
                 try
                 {
                     word.Capitalize();
-                    _context.Words.Add(word);
-                     await _context.SaveChangesAsync();
+                    context.Words.Add(word);
+                    await context.SaveChangesAsync();
                     result.Msg += $"{word.UrText} - {word.RuText}\n\n";
                 }
                 catch (Exception e)
-                {                    
+                {
                 }
             }
 
             return result;
         }
 
-        private async Task<List<Word>> TryTranslate(string text, bool fromRu)
+        private static async Task<List<Word>> TryTranslate(string text, bool fromRu)
         {
-            var _context = new ApplicationDbContext();
-
-            return await(fromRu ? _context.Words.Where(x => x.RuText == text).ToListAsync()
-                : _context.Words.Where(x => x.UrText == text).ToListAsync());
+            var context = new ApplicationDbContext();
+            return await (fromRu ? context.Words.Where(x => x.RuText == text).ToListAsync()
+                : context.Words.Where(x => x.UrText == text).ToListAsync());
         }
 
-        public async Task<List<Word>> Translate(string text, bool fromRu)
+        public static async Task<List<Word>> Translate(string text, bool fromRu)
         {
             if (text == null || text.Length == 0)
                 return null;
-    
 
-            List<Word> resultList = new List<Word>();
-            
+
+            var resultList = new List<Word>();
+
             var tmp = await TryTranslate(text, fromRu);
             resultList.AddRange(tmp);
 

@@ -7,7 +7,7 @@ namespace AdishimBotApp.Models
         public int Id { get; set; }
         public string UrText { get; set; }
         public string RuText { get; set; }
-        public int AuthorId { get; set; }
+        public long AuthorId { get; set; }
 
         public void Capitalize()
         {

@@ -1,11 +1,8 @@
-﻿using System;
-using AdishimBotApp.Models;
-
+﻿
 namespace AdishimBotApp.Services
 {
-    public static class TransliterationService
+    public class TransliterationService
     {
-            
         public static string FromArab(string text, bool toUly)
         {
             var result = string.Empty;
@@ -13,7 +10,7 @@ namespace AdishimBotApp.Services
             bool start = true;
 
             text = toUly ? text.Replace('ﺍ', 'a').Replace('ﻭ', 'o').Replace('ﻩ', 'e') : text.Replace('ﺍ', 'а').Replace('ﻭ', 'о').Replace('ﻩ', 'ә');
-       
+
             for (int i = 0; i < text.Length; i++)
             {
 
@@ -139,7 +136,7 @@ namespace AdishimBotApp.Services
                             result += connNext ? letter.ArabEnd : letter.Arab;
                             continue;
                         }
-                        
+
                         result += letter.ArabStart;
                     }
                     connNext = letter.ConnNext;
@@ -160,9 +157,9 @@ namespace AdishimBotApp.Services
             {
                 Letter letter = null;
 
-                if(i + 1 < text.Length)
+                if (i + 1 < text.Length)
                     letter = Alfabet.GetLetter(text[i].ToString() + text[i + 1].ToString(), fromCyr: false);
-                if(letter == null)
+                if (letter == null)
                     letter = Alfabet.GetLetter(text[i].ToString(), fromCyr: false);
 
                 if (letter == null)
@@ -171,7 +168,7 @@ namespace AdishimBotApp.Services
                     continue;
                 }
 
-                i += letter.UlyDown.Length - 1; 
+                i += letter.UlyDown.Length - 1;
 
                 if (i == 0 || Alfabet.GetLetter(text[i - 1].ToString(), fromCyr: false) == null) // start
                 {
